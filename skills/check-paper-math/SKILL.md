@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.0
+version: 0.8.2
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -70,7 +70,8 @@ where the user asks.
    - rejoin words split by a line-end hyphen, accepting either form when the
      word may carry a real hyphen, as "pre-trained" does;
    - expand ligatures such as ﬁ and ﬂ;
-   - allow for math that the PDF flattened.
+   - allow for math that the PDF flattened;
+   - allow a quote to change the case of its first letter.
 
    Read the math in `src/**/*.tex`. If there is no TeX source, use
    `https://arxiv.org/html/<id>` or the PDF. TeX contains text the PDF never
