@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.6.0
+version: 0.6.1
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -100,7 +100,10 @@ where the user asks.
      range; an indicator is 0 once and 1 once; when a sign decides the branch,
      both signs appear. A split the paper describes without a rule is not a
      branch;
-   - every figure the reading attributes to the paper has been recomputed.
+   - every number the reading attributes to the paper and derives from the
+     paper's formulas, such as a parameter count or a memory size, has been
+     recomputed. Measured results, such as a benchmark score, are checked as
+     quotes instead.
 7. **Claims.** For every statement about what the paper does, shows or argues,
    compare its strength with the paper's own wording. Look for:
    - "shows" or "proves" where the paper says "suspects" or "argues";
@@ -122,7 +125,8 @@ where the user asks.
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
     _contradicted_. A fact counts as present when the reading establishes the
-    same point, even with a different example or different numbers. For a contradiction, decide from the source which side is
+    same point, even with a different example or different numbers. A fact the
+    reading covers only in part is _missing_; say which part is absent. For a contradiction, decide from the source which side is
     right, and say which.
 
 ## Severity
@@ -133,7 +137,7 @@ Give every defect exactly one severity.
 | -------------- | ---------- |
 | _wrong_        | contradicts the source or the arithmetic; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
 | _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper with no source |
-| _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a figure from the paper that was not recomputed; a reference fact the reading omits |
+| _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a derived number from the paper that was not recomputed; a reference fact the reading omits or covers only in part |
 | _unclear_      | correct, but the target reader cannot follow it |
 
 ## Verdict
