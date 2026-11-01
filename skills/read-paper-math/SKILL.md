@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.3.0
+version: 0.4.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -151,7 +151,12 @@ Pick the **role** from this list:
 - index.
 
 In **Defined at**, give the quote and its location. Every symbol in the equation
-appears either in the table or in the "Not defined in the paper" list.
+appears either in the table or in the "Not defined in the paper" list. A symbol
+you introduce yourself, for example to name a quantity the paper describes only
+in words, gets a row marked "(introduced here)" instead of a quote.
+
+If the paper states the equation only in words, quote those words under "The
+equation", then write the formula they describe and mark it as yours.
 
 ### 4. Read from the inside out
 
@@ -199,8 +204,11 @@ answers only part of the question.
     min, cover both signs.
 - Prefer inputs with exact answers. For example, the scores $(0,\log3)$ give
   exponentials 1 and 3.
-- Write a short Python check with `assert` statements, using the standard library
-  or NumPy, in your scratch directory. Run it with
+- Write a short Python check with `assert` statements, using only the standard
+  library and NumPy, in your scratch directory. Do not add PyTorch, JAX or other
+  framework code, even if the user writes in one: `check-paper-math` runs only
+  standard-library and NumPy code, so anything else cannot be verified. A
+  one-line framework equivalent in prose is fine. Run it with
   `uv run --no-project --with numpy python <scratch>/check.py`. The
   `--no-project` flag keeps `uv` from installing the surrounding project. Paste
   the code and the output you actually got.
@@ -255,7 +263,8 @@ derivation, an experiment, or a suspicion. Also note:
 Write the reading with `<skill-dir>/references/reading-template.md`. Keep every
 heading. Under a heading with nothing to say, write one sentence saying why.
 State each fact once: if a later section needs it, refer back instead of
-repeating it. Link every paper you opened with its version, as in
+repeating it. A definition quoted in the symbol table does not need to be quoted
+again elsewhere. Link every paper you opened with its version, as in
 `https://arxiv.org/abs/2402.03300v3`. Name references you did not open, without
 a link.
 
