@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.7.1
+version: 0.7.2
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -51,7 +51,10 @@ directory this SKILL.md was loaded from.
    looked. For example, a model given DPO's equation (7) without its definitions
    tends to read $\sigma$ as a standard deviation; the paper means the sigmoid.
    `<skill-dir>/../_shared/notation.md` lists the possible readings of a symbol.
-   It never decides which one this paper uses.
+   It never decides which one this paper uses. Standard notation with one fixed
+   mathematical meaning, such as $\Vert x\Vert^2$, $\mathcal N(\mu,\sigma^2)$,
+   $\exp$ or $\log$, is not a gap: explain it from `notation.md`. A gap is a
+   letter or symbol whose meaning changes from paper to paper.
 3. **Compute with code.** Every number you compute, as opposed to one you quote
    from the paper, comes from code you ran. Show the code and its actual output.
 4. **Keep the paper's strength of claim.** Separate what the paper defines,
@@ -65,6 +68,15 @@ directory this SKILL.md was loaded from.
    including footnotes, appendices and figure captions. Say where you searched.
    Likewise, before you state a setting as the paper's rule, check whether an
    appendix or an experiment departs from it, and say so if one does.
+
+## Tools
+
+`allowed-tools` lists commands that run without asking for permission; it is
+not a limit. Read-only shell commands such as `ls`, `cat`, `grep` and `sed -n`
+are fine for reading downloads. WebFetch returns a summary, so never quote from
+it. To quote code, download the raw file at the pinned commit into your scratch
+directory, for example
+`python3 -c "import urllib.request,sys; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" https://raw.githubusercontent.com/<owner>/<repo>/<commit>/<path> <scratch>/<file>`.
 
 ## Where files go
 
