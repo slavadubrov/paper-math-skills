@@ -24,7 +24,8 @@ import tarfile
 import urllib.request
 from pathlib import Path
 
-ID_RE = re.compile(r"^(\d{4}\.\d{4,5}|[a-z-]+(\.[A-Z]{2})?/\d{7})v\d+$")
+ID_RE = re.compile(r"(\d{4}\.\d{4,5}|[a-z-]+(\.[A-Z]{2})?/\d{7})v\d+")
+MAX_BYTES = 500 * 1024 * 1024  # refuse archives that unpack beyond this
 UA = "paper-math-skills/0.1 (one-off fetch for reading a paper)"
 
 
@@ -55,7 +56,10 @@ def unpack_source(blob: bytes, src_dir: Path) -> list[str]:
     if blob[:4] == b"%PDF":
         return []  # no TeX source was uploaded; the PDF is fetched separately
     if blob[:2] == b"\x1f\x8b":
-        blob = gzip.decompress(blob)
+        with gzip.GzipFile(fileobj=io.BytesIO(blob)) as gz:
+            blob = gz.read(MAX_BYTES + 1)
+        if len(blob) > MAX_BYTES:
+            sys.exit("source archive unpacks to more than 500 MB; refusing")
     try:
         with tarfile.open(fileobj=io.BytesIO(blob)) as tar:
             return safe_extract(tar, src_dir)
@@ -65,14 +69,18 @@ def unpack_source(blob: bytes, src_dir: Path) -> list[str]:
 
 
 def fetch(arxiv_id: str, dest: Path) -> None:
-    if not ID_RE.match(arxiv_id):
+    if not ID_RE.fullmatch(arxiv_id):
         sys.exit(f"Need a versioned arXiv ID such as 2402.03300v3, got {arxiv_id!r}")
     if dest.exists() and any(dest.iterdir()):
         sys.exit(f"{dest} is not empty; use a new directory for each download")
     dest.mkdir(parents=True, exist_ok=True)
 
-    files = unpack_source(get(f"https://arxiv.org/e-print/{arxiv_id}"), dest / "src")
-    (dest / "paper.pdf").write_bytes(get(f"https://arxiv.org/pdf/{arxiv_id}"))
+    try:
+        files = unpack_source(get(f"https://arxiv.org/e-print/{arxiv_id}"), dest / "src")
+        (dest / "paper.pdf").write_bytes(get(f"https://arxiv.org/pdf/{arxiv_id}"))
+    except Exception:
+        shutil.rmtree(dest)  # leave no half-filled directory that blocks a retry
+        raise
     if shutil.which("pdftotext"):
         subprocess.run(
             ["pdftotext", "-layout", str(dest / "paper.pdf"), str(dest / "paper.txt")],
@@ -90,18 +98,28 @@ def self_test() -> None:
 
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w:gz") as tar:
-        for name, data in [("main.tex", b"x"), ("../evil.tex", b"y"), ("sec/a.tex", b"z")]:
+        for name, data in [
+            ("main.tex", b"x"),
+            ("../evil.tex", b"y"),
+            ("/abs/evil.tex", b"y"),
+            ("sec/a.tex", b"z"),
+        ]:
             info = tarfile.TarInfo(name)
             info.size = len(data)
             tar.addfile(info, io.BytesIO(data))
+        link = tarfile.TarInfo("link.tex")
+        link.type, link.linkname = tarfile.SYMTYPE, "/etc/passwd"
+        tar.addfile(link)
     with tempfile.TemporaryDirectory() as tmp:
         written = unpack_source(buf.getvalue(), Path(tmp) / "src")
         assert sorted(written) == ["main.tex", "sec/a.tex"], written
         assert not (Path(tmp) / "evil.tex").exists()
+        assert not (Path(tmp) / "src" / "link.tex").exists()
         single = unpack_source(gzip.compress(b"\\documentclass{article}"), Path(tmp) / "s2")
         assert single == ["main.tex"]
         assert unpack_source(b"%PDF-1.5 ...", Path(tmp) / "s3") == []
-    assert ID_RE.match("2402.03300v3") and not ID_RE.match("2402.03300")
+    assert ID_RE.fullmatch("2402.03300v3") and not ID_RE.fullmatch("2402.03300")
+    assert not ID_RE.fullmatch("2402.03300v3\n")
     print("self-test passed")
 
 

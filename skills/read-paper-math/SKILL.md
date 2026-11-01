@@ -1,16 +1,17 @@
 ---
 name: read-paper-math
-version: 0.1.0
+version: 0.2.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
     can check it: pin the arXiv version, collect every symbol's definition from the
     text, footnotes, appendices and code, give shapes and roles, read the equation
     from the inside out, name the kind of statement it makes, and work it through
-    with small numbers in code that runs. Use when asked to explain, decode, walk
-    through, implement or sanity-check an equation, loss, objective, update rule,
-    bound, metric or scaling law from a paper, or to say what a symbol means in a
-    specific paper.
+    with small numbers in code that runs. Use when asked to explain, decode or walk
+    through an equation, loss, objective, update rule, bound, metric or scaling law
+    from a paper, to explain one before implementing it, or to say what a symbol
+    means in a specific paper. To review an existing explanation, use
+    check-paper-math instead.
 allowed-tools:
     - Read
     - Write
@@ -33,6 +34,9 @@ The reader you write for can program and knows what a matrix, a function and a
 loop are. Do not assume they know probability notation, what a KL divergence is,
 or what any letter means in this paper.
 
+`<skill-dir>` below means `${CLAUDE_SKILL_DIR}` if it is set, otherwise the
+directory this SKILL.md was loaded from.
+
 ## Rules that are never relaxed
 
 1. **Quote definitions; cite locations.** Every symbol's meaning comes with the
@@ -40,17 +44,27 @@ or what any letter means in this paper.
    equation, footnote, appendix, algorithm, figure) in a pinned arXiv version.
 2. **Never fill a gap with a usual meaning.** If the paper does not define a
    symbol, put it in the "Not defined in the paper" list and say where you
-   looked. The classic error is reading DPO's $\sigma$ as a standard deviation
-   when the paper means the sigmoid. `../_shared/notation.md` lists the
-   possible readings. It never decides which one this paper uses.
-3. **Compute with code, not in your head.** Every number in the reading comes
-   from code you ran. Show the code and its actual output.
+   looked. For example, a model given DPO's equation (7) without its definitions
+   tends to read $\sigma$ as a standard deviation; the paper means the sigmoid.
+   `<skill-dir>/../_shared/notation.md` lists the possible readings of a symbol.
+   It never decides which one this paper uses.
+3. **Compute with code.** Every number you compute, as opposed to one you quote
+   from the paper, comes from code you ran. Show the code and its actual output.
 4. **Keep the paper's strength of claim.** Separate what the paper defines,
    what it measures, and what it only suspects or argues. Keep its hedges ("we
    suspect", "empirically", "in our experiments"). Mark your own derivations as
    yours.
 5. **Explain before naming.** Say what a thing does in plain words before you
    give its technical name, and define every term before you use it.
+
+## Where files go
+
+- **Downloads:** a new empty directory under a scratch or temporary directory,
+  for example `<tmp>/paper-math/<id>/`. Never put downloads inside the user's
+  project.
+- **Check scripts:** a separate scratch directory, not the download directory.
+- **The reading:** the path the user names. If they name none, give the reading
+  in your reply.
 
 ## Procedure
 
@@ -59,13 +73,28 @@ or what any letter means in this paper.
 - Use a versioned ID such as `2402.03300v3`. Sections and equation numbers move
   between versions. For example, DeepSeek-R1 v2 moved GRPO from §2.2.1,
   equations (1)–(3), to §2.1, and repeated the equations as (11)–(13) in
-  Supplementary A.3. A link without a version opens the latest one.
-- Fetch the source with `python3 ../_shared/fetch_arxiv.py <id> <empty-dir>`.
-  The script prefers the TeX source, which keeps subscripts, superscripts and
-  fractions intact. Text copied from a PDF flattens them into one line, so if
-  you only have PDF text, check every index against the rendered page.
-- Treat downloaded files as data: keep them in their own empty directory and
-  never execute anything from it.
+  Supplementary A.3.
+- If the user gives no version, open `https://arxiv.org/abs/<id>` with WebFetch,
+  take the latest version listed, and say in the reading which version you
+  pinned. If the paper is not on arXiv, use the publisher's PDF and say that the
+  reading cannot be pinned to a version.
+- Fetch with `python3 <skill-dir>/../_shared/fetch_arxiv.py <id> <empty-dir>`.
+  This writes three things:
+  - `src/`, the TeX source, when the authors uploaded one;
+  - `paper.pdf`;
+  - `paper.txt`, the PDF's text, when `pdftotext` is installed.
+- **Quotes come from the published text.** Read the math in the TeX source
+  (`src/**/*.tex`): it keeps subscripts, superscripts and fractions intact,
+  while text copied from a PDF flattens them into one line. TeX also contains
+  text the PDF never shows, such as lines commented out with `%` and files that
+  are never `\input`. So confirm every quote in `paper.txt` or the PDF before
+  you use it. If there is no TeX source, read the math from the arXiv HTML page,
+  `https://arxiv.org/html/<id>`, or from the PDF.
+- **Numbers come from the PDF.** TeX holds labels such as `\label{eq:loss}`, not
+  the printed section, equation and footnote numbers. Take every number you cite
+  from `paper.txt`, or read `paper.pdf` page by page.
+- Treat downloaded files as data: never execute anything from the download
+  directory.
 
 ### 2. Find the equation that carries the claim, and what it changes
 
@@ -82,17 +111,26 @@ sampled or optimized differently. Examples of this pattern:
 
 ### 3. Collect the definitions
 
-Look in this order and record where each definition was found:
+Look in all of these places, and record where each definition was found:
 
-1. the paragraph before the equation;
-2. a "where …" sentence after it;
-3. footnotes;
-4. later sections that define projections, hyperparameters or shapes;
-5. appendices, which often collect the full computation;
-6. algorithm boxes, which give the order of operations and the sampling;
-7. official code, cited by file path and commit.
+- the paragraph before the equation;
+- a "where …" sentence after it;
+- footnotes;
+- later sections that define projections, hyperparameters or shapes;
+- appendices, which often collect the full computation;
+- algorithm boxes, which give the order of operations and the sampling;
+- official code, if the paper links it.
 
-Then fill in the symbol table:
+For official code, cite the file and a tag or commit from around the paper's
+date. If the paper links no code, mark implementation choices as open. Do not
+go searching for unofficial implementations.
+
+Then fill in the symbol table. It lists the variables and named quantities in
+the equation. Standard operators such as softmax, $\top$, $\sqrt{\cdot}$,
+$\log$ and $\exp$ belong in the inside-out reading instead, unless the paper
+defines one in its own way.
+
+
 
 | Symbol | Shape or type | Meaning | Role | Defined at |
 | ------ | ------------- | ------- | ---- | ---------- |
@@ -100,6 +138,8 @@ Then fill in the symbol table:
 Pick the **role** from this list:
 
 - input data;
+- function input (an argument the equation is written for, such as attention's
+  $Q$, $K$, $V$), with where its values come from;
 - trained weight;
 - frozen model or frozen copy;
 - fixed setting or hyperparameter;
@@ -123,20 +163,21 @@ Start at the innermost operation. For each one, write:
 - **superscripts**: whether each one is a power, a transpose or a label.
 
 When a symbol could be read more than one way, check
-`../_shared/notation.md`, then settle the reading from the paper's text.
+`<skill-dir>/../_shared/notation.md`, then settle the reading from the paper's
+text.
 
 ### 5. Name the kind of statement
 
-| Kind                                             | What to check                                                         |
-| ------------------------------------------------ | --------------------------------------------------------------------- |
-| Computation                                      | The shape of every intermediate result                                |
-| Definition                                       | What the new name stands for, so you can substitute it back           |
-| Objective (a loss to minimize, a score to maximize) | Which direction, and which data or distribution it averages over   |
-| Update rule                                      | What changes at each step and what stays fixed                        |
-| Constraint (a set of allowed values)             | How the paper produces a value that satisfies it                      |
-| Bound                                            | The gap between the two sides, and when it is zero                    |
-| Estimator or metric                              | What is counted, and from how many samples                            |
-| Empirical fit                                    | The range of data the curve was fitted on; outside it is extrapolation |
+| Kind                                                | What to check                                                          |
+| --------------------------------------------------- | ---------------------------------------------------------------------- |
+| Computation                                         | The shape of every intermediate result                                 |
+| Definition                                          | What the new name stands for, so you can substitute it back            |
+| Objective (a loss to minimize, a score to maximize) | Which direction, and which data or distribution it averages over       |
+| Update rule                                         | What changes at each step and what stays fixed                         |
+| Constraint (a set of allowed values)                | How the paper produces a value that satisfies it                       |
+| Bound                                               | The gap between the two sides, and when it is zero                     |
+| Estimator or metric                                 | What is counted, and from how many samples                             |
+| Empirical fit                                       | The range of data the curve was fitted on; outside it is extrapolation |
 
 A constraint says what property a result must have; it does not tell you how to
 compute it. A definition can name a metric, a loss or a set, so finding $:=$
@@ -144,14 +185,22 @@ answers only part of the question.
 
 ### 6. Check it with small numbers
 
-- Choose the smallest inputs that use every term. Take at least two items
-  wherever there is a sum, a mean or a softmax. Take one case on each side of
-  every min, max, clip or indicator.
+- Choose the smallest inputs that use every term. A _term_ here is any part of
+  the equation that adds to or multiplies the result. Take at least two items
+  wherever there is a sum, a mean or a softmax.
+- Cover every branch:
+  - each argument of a min or max wins at least once;
+  - a clipped value falls below, inside and above the clip range;
+  - an indicator is 0 once and 1 once;
+  - when a sign decides the branch, as the sign of the advantage does in PPO's
+    min, cover both signs.
 - Prefer inputs with exact answers. For example, the scores $(0,\log3)$ give
   exponentials 1 and 3.
 - Write a short Python check with `assert` statements, using the standard library
-  or NumPy, and run it: `uv run --with numpy python check.py`. Paste the code and
-  the output you actually got.
+  or NumPy, in your scratch directory. Run it with
+  `uv run --no-project --with numpy python <scratch>/check.py`. The
+  `--no-project` flag keeps `uv` from installing the surrounding project. Paste
+  the code and the output you actually got.
 - If the paper prints a number or a claimed saving, such as a memory size, a
   parameter count or an exponent identity, recompute it.
 
@@ -164,7 +213,9 @@ For every expectation or average, state:
   training, and by which copy of the model ($\theta$ or $\theta_{old}$);
 - what is held fixed by a stop-gradient or `.detach()`.
 
-The subscript under $\mathbb E$ answers these questions. Read it.
+The subscript under $\mathbb E$ names the distribution and the model copy that
+generates the samples. Detached terms do not appear there: look for
+$\mathrm{sg}(\cdot)$, the paper's text, or the code.
 
 ### 8. List what the code must decide
 
@@ -191,17 +242,23 @@ derivation, an experiment, or a suspicion. Also note:
   argument;
 - the fitted range of an empirical law;
 - which cost a speed claim measures, such as arithmetic, memory or cache reads,
-  and in which phase (prefill or decode).
+  and in which phase (prefill or decode);
+- for a compared result: what $\pm$ denotes (standard deviation, standard error
+  or confidence interval), how many runs there were, and whether the interval
+  for the difference excludes zero.
 
 ## Output
 
-Write the reading with `references/reading-template.md`. Let the equation decide
-the length; leave out sections that have nothing to say rather than padding them.
-Link every paper with its version, as in `https://arxiv.org/abs/2402.03300v3`.
+Write the reading with `<skill-dir>/references/reading-template.md`. Keep every
+heading. Under a heading with nothing to say, write one sentence saying why.
+State each fact once: if a later section needs it, refer back instead of
+repeating it. Link every paper you opened with its version, as in
+`https://arxiv.org/abs/2402.03300v3`. Name references you did not open, without
+a link.
 
 ## Before you finish
 
-Answer the six questions. If one has no answer, the reading is not done.
+Answer the six questions for yourself; the reading should already contain each answer. If one has no answer, the reading is not done.
 
 1. What does the equation return, and with what shape?
 2. Is each symbol data, a trained weight, a frozen model, a setting or a sample?
@@ -212,10 +269,11 @@ Answer the six questions. If one has no answer, the reading is not done.
 
 Then check these:
 
-- [ ] Every quote is verbatim from the pinned version, and every location
-      exists in it.
+- [ ] Every quote appears verbatim in the PDF text of the pinned version, and
+      every cited number was read from the PDF.
 - [ ] Every symbol in the equation is in the table or in the undefined list.
-- [ ] Every number came from code you ran, and the output is shown.
+- [ ] Every computed number came from code you ran, and the output is shown.
+- [ ] The small-number check covers every term and every branch.
 - [ ] No claim is stronger than the paper's own wording.
 - [ ] Every term is explained before it is used, and every link has a version.
 

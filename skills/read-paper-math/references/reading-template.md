@@ -1,15 +1,15 @@
 # Reading template
 
-Copy this structure. Keep the headings so readings can be compared. Under any
-heading with nothing to say, write one sentence explaining why, rather than
-filler.
+Copy this structure and keep every heading, so readings can be compared. Under a
+heading with nothing to say, write one sentence saying why. State each fact
+once; a later section refers back rather than repeating it.
 
 ```markdown
 # <Paper short name>: <what the equation does, in plain words>
 
 **Source:** <Authors>, [<Title>](https://arxiv.org/abs/<id>v<N>), v<N>,
 §<section>, equation(s) (<numbers>). <Other locations used: footnotes,
-appendix, algorithm, code at commit>.
+appendix, algorithm, code at a tag or commit>.
 
 ## What it computes and what it changes
 
@@ -46,12 +46,12 @@ for this equation.
 ## Where the samples come from
 
 <For each expectation or average: the distribution or dataset; fixed data or
-model-generated; which model copy; what is detached. Write "No expectation or
-sampling in this equation" when that is true.>
+model-generated; which model copy; what is detached. If the equation has no
+expectation or sampling, say so in one sentence.>
 
 ## Check with small numbers
 
-<One sentence on the chosen inputs and why they exercise every term.>
+<One sentence on the chosen inputs and how they cover every term and branch.>
 
 ```python
 <runnable check with asserts>
@@ -67,26 +67,15 @@ Output:
 
 ## What the code must decide
 
-- <choice the equation leaves open>: <what official code does, with file and
-  commit, or "open">
+- <choice the equation leaves open>: <what the official code does, with file
+  and tag or commit, or "open">
 
 ## What the paper claims and what it shows
 
 - <claim>: <defined, derived, measured (which experiment, table or figure), or
   suspected>. <Assumptions or fitted range.>
 
-## The six questions
-
-| Question | Answer |
-| -------- | ------ |
-| What does the equation return, and with what shape? | ... |
-| Is each symbol data, a trained weight, a frozen model, a setting or a sample? | ... |
-| Over which index or axis does each operation run? | ... |
-| Where are the definitions? | ... |
-| What does a check with two or three numbers give? | ... |
-| What did the code have to decide that the equation leaves open? | ... |
-
 ## Sources
 
-- <every paper, code file or page used, versioned>
+- <every paper, code file or page you opened, versioned>
 ```

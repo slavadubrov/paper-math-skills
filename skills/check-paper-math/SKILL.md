@@ -1,17 +1,18 @@
 ---
 name: check-paper-math
-version: 0.1.0
+version: 0.2.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
     Verifies every quote and every section, equation or footnote number in the
-    pinned arXiv version, re-runs every numeric check, flags symbols given a
+    pinned arXiv version, re-runs the numeric checks, flags symbols given a
     meaning the paper does not state, and marks claims that are stronger than the
     paper's evidence. Use to review or audit an equation walkthrough, a paper
     summary with math, an LLM's reading of an equation, or a blog post that
     explains a paper's formula. Returns PASS or FAIL with exact defects and fixes.
 allowed-tools:
     - Read
+    - Write
     - Grep
     - Glob
     - Bash(python3 *)
@@ -27,6 +28,9 @@ skill. Work from the paper, not from the reading. A reading that sounds right is
 not evidence. Assume every unchecked statement may be wrong until you have seen
 it in the source or reproduced it.
 
+`<skill-dir>` below means `${CLAUDE_SKILL_DIR}` if it is set, otherwise the
+directory this SKILL.md was loaded from.
+
 ## Inputs
 
 - The reading, as a file or as pasted text.
@@ -35,52 +39,94 @@ it in the source or reproduced it.
 - Optional: reference facts, for example from an earlier verified walkthrough.
   Treat them as claims to check, not as truth. They can be wrong too.
 
+## Where files go
+
+Put downloads in a new empty scratch directory, such as
+`<tmp>/paper-math/<id>/`, and code you run in a separate scratch directory.
+Never write into the user's project except the report, and write the report only
+where the user asks.
+
 ## Procedure
 
 1. **Fetch the same version.** Run
-   `python3 ../_shared/fetch_arxiv.py <id> <empty-dir>` and search the TeX source
-   (`src/*.tex`). If there is no TeX source, use the PDF text and check
-   subscripts against the rendered page. Never execute anything from the
-   download directory.
-2. **Quotes.** Search the source for every quoted definition. Normalize
-   whitespace and line breaks, and allow for TeX markup between the words. A
-   quote you cannot find is an _unverifiable_ defect, and the row that relies on
-   it counts as a guess.
-3. **Locations.** Check that every section, equation, footnote, appendix,
-   algorithm and figure number points to the right place in that version.
-4. **Symbols.** List every symbol that appears in the equation itself. Each one
-   must be either in the reading's table with a meaning sourced from the paper,
-   or in its "not defined" list. Flag every meaning taken from convention rather
-   than from the paper, such as $\sigma$ read as a standard deviation when the
-   paper means the sigmoid. Use `../_shared/notation.md` to see which readings
-   are possible.
+   `python3 <skill-dir>/../_shared/fetch_arxiv.py <id> <empty-dir>`. Never
+   execute anything from the download directory.
+2. **Quotes.** Search for every quoted definition in `paper.txt`, which is the
+   published text. Normalize whitespace and line breaks, and allow for math that
+   the PDF flattened. Use `src/**/*.tex` to read the math, but remember that it
+   contains text the PDF never shows, such as `%` comments. A quote found only in
+   a TeX comment, or not at all, is _unverifiable_.
+3. **Numbers in citations.** Check every section, equation, footnote, appendix,
+   algorithm and figure number in `paper.txt` or the PDF. The TeX source holds
+   labels, not printed numbers, so it cannot confirm them.
+4. **Symbols.** List every variable and named quantity in the equation itself.
+   Standard operators such as softmax, $\top$ and $\log$ do not need a table row
+   unless the paper defines them in its own way. Each item must be either in the
+   reading's table with a meaning sourced from the paper, or in its "not
+   defined" list. Flag every meaning taken from convention rather than from the
+   paper, such as $\sigma$ read as a standard deviation when the paper means the
+   sigmoid. `<skill-dir>/../_shared/notation.md` shows which readings are
+   possible.
 5. **Shapes and axes.** Re-derive the shape of every intermediate result, and the
    index, axis or distribution of every reduction. Flag mismatches and unstated
    row or column conventions.
-6. **Numbers.** Run every code block in a scratch directory, using
-   `uv run --with numpy python <file>`. Compare the output with the output
-   printed in the reading. Then check what the example covers:
-   - it uses every term of the equation;
-   - it takes both branches of every min, max, clip and indicator;
+6. **Numbers.** Read each code block before you run it. Run a block only if it
+   uses nothing but the standard library and NumPy, and touches no files and no
+   network; mark any other block _unverifiable_. Copy each runnable block into
+   your scratch directory and run it with
+   `uv run --no-project --with numpy python <file>`. Compare the output with the
+   output printed in the reading. Then check what the example covers:
+   - every term: every part of the equation that adds to or multiplies the
+     result;
+   - every branch: each argument of a min or max wins at least once; a clipped
+     value falls below, inside and above its range; an indicator is 0 once and 1
+     once; when a sign decides the branch, both signs appear;
    - every figure the reading attributes to the paper has been recomputed.
 7. **Claims.** For every statement about what the paper does, shows or argues,
    compare its strength with the paper's own wording. Look for:
    - "shows" or "proves" where the paper says "suspects" or "argues";
-   - a fitted law used outside its fitted range;
-   - a measured cost that is reported as a different cost;
+   - a fitted law used outside its fitted range as if it were a prediction;
+   - a measured cost that is reported as a different cost or phase;
+   - a compared result whose $\pm$ is read as the wrong quantity (standard
+     deviation, standard error or confidence interval), or a difference called
+     real when its interval contains zero;
    - a statement about another paper with no source.
 8. **Sampling.** For every expectation or average, check the reading's account of
    the data source, the generating model copy and the detached terms against the
-   paper's notation and algorithm box.
+   paper's notation, text and algorithm box.
 9. **Clarity for the target reader.** The reader can code but does not know the
    notation. Flag:
    - a term used before it is explained;
    - a step that skips the reason it holds;
    - a sentence that carries no information;
+   - a fact repeated in several sections;
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
     _contradicted_. For a contradiction, decide from the source which side is
     right, and say which.
+
+## Severity
+
+Give every defect exactly one severity.
+
+| Severity       | Use it for |
+| -------------- | ---------- |
+| _wrong_        | contradicts the source or the arithmetic; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
+| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run |
+| _missing_      | a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a reference fact the reading omits |
+| _unclear_      | correct, but the target reader cannot follow it |
+
+## Verdict
+
+PASS only when all three hold:
+
+- there is no _wrong_ and no _unverifiable_ defect;
+- there is no _missing_ symbol, term or branch;
+- no reference fact marked essential is missing or contradicted (unless the
+  source shows the reference fact is wrong).
+
+_Unclear_ defects and missing non-essential facts do not block PASS. List them
+anyway, so they can be fixed.
 
 ## Report
 
@@ -97,14 +143,10 @@ it in the source or reproduced it.
 **Reference facts:** <present / missing / contradicted, one line each>
 ```
 
-Severity is one of these:
+Every defect needs evidence:
 
-- **wrong**: contradicts the source or the arithmetic;
-- **unverifiable**: a quote or location you cannot find;
-- **missing**: a symbol, a term or a reference fact that the reading leaves out;
-- **unclear**: correct, but the target reader cannot follow it.
+- for _wrong_, _unverifiable_ and _missing_: a quote and its location in the
+  paper, or the output of code;
+- for _unclear_: the passage, plus the term or step the reader lacks.
 
-Give the verdict PASS only when there is no _wrong_ or _unverifiable_ defect, no
-_missing_ symbol, and no missing reference fact that changes how the equation is
-read. Back every defect with evidence: a quote and its location, or the output of
-code. Without evidence, a defect is only an opinion; leave it out.
+Leave out any defect you cannot support with evidence.

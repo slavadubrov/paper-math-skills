@@ -5,6 +5,11 @@ symbols, and a definition in the paper always wins over this file. Use the file 
 know which readings are possible and where a symbol is ambiguous. Then find the
 paper's own definition, or list the symbol as undefined.
 
+Paper citations below refer to these versions: Attention Is All You Need
+1706.03762v7, DeepSeek-V2 2405.04434v5, DeepSeek-V3 2412.19437v2, DeepSeek-V4
+2606.19348v1, DeepSeekMath 2402.03300v3, DAPO 2503.14476v2, DPO 2305.18290v3,
+MiniLLM 2306.08543v4, DDPM 2006.11239v2, Gated DeltaNet 2412.06464v3.
+
 ## Indices, labels and marks
 
 - **Subscripts are usually indices.** $x_i$ can be coordinate $i$ of a vector or
@@ -52,7 +57,7 @@ Symbols that have several jobs:
 | $\propto$            | Proportional to, with a normalizing constant left out: $p_i\propto e^{z_i}$                   |
 | $\ll$                | Much smaller than, as in DeepSeek-V2's $d_c\ll d_hn_h$                                        |
 | $\leftarrow$         | Assignment, as in an update rule                                                              |
-| $\le$, $\ge$         | A bound when it relates a quantity to something computable                                    |
+| $\le$, $\ge$         | An inequality: a bound (the ELBO), a constraint ($A\ge0$), or a range ($0\le k\le n$)          |
 
 The relation sign and the job of the whole line are different questions. Finding
 $:=$ tells you that something is being named, not what kind of thing it is.
@@ -75,9 +80,10 @@ $:=$ tells you that something is being named, not what kind of thing it is.
 - **Indicator.** $\mathbf 1[C]$, also printed $\mathbb 1(C)$ or $\mathbb I(C)$,
   is 1 when condition $C$ holds and 0 otherwise. A sum of indicators counts how
   often the condition holds: $\sum_i\mathbf 1[\hat y_i=y_i]$ is the number of
-  correct predictions. Check exactly which quantity the condition tests.
-  DeepSeek-V3's balance loss, equation (18), tests the raw score without the
-  routing bias, so its count can differ from the experts that routing selects.
+  correct predictions. Check exactly which quantity the condition tests. In
+  DeepSeek-V3, $f_i$ in equation (18), part of the balance loss (17), tests the
+  raw score without the routing bias, so its count can differ from the experts
+  that routing (16) selects.
 - **Binomial coefficient.** $\binom nk=n!/(k!(n-k)!)$ counts the ways to choose
   $k$ of $n$ items when order does not matter; $\binom52=10$. $n!=1\cdots n$ and
   $0!=1$.
@@ -153,9 +159,11 @@ $:=$ tells you that something is being named, not what kind of thing it is.
   root. $\mathcal N(\mu,\sigma^2)$ takes a variance, not a standard deviation.
   $\mathcal N(0,I)$ is a vector of independent standard normals.
 - For independent variables, the mean of a product is the product of the means,
-  and the variance of a sum is the sum of the variances. So a dot product of two
-  $d$-vectors with independent mean-0, variance-1 entries has variance $d$:
-  Attention Is All You Need, footnote 4.
+  and the variance of a sum is the sum of the variances. Two consequences: a
+  product of two independent mean-0, variance-1 numbers has variance 1; and a
+  dot product of two $d$-vectors with independent mean-0, variance-1 entries,
+  a sum of $d$ such products, has variance $d$ (Attention Is All You Need,
+  footnote 4).
 - Standard error of a mean of $N$ independent runs is $\sigma/\sqrt N$. Before
   comparing $82.3\pm0.4$ with $81.5\pm0.4$, find out whether 0.4 is a standard
   deviation, a standard error or a confidence-interval half-width. With few runs,
@@ -237,7 +245,7 @@ $:=$ tells you that something is being named, not what kind of thing it is.
 | Letter                 | Name    | Common roles                                                         |
 | ---------------------- | ------- | -------------------------------------------------------------------- |
 | $\alpha$               | alpha   | mixing weight or scale; decay (Gated DeltaNet); noise schedule (DDPM) |
-| $\beta$                | beta    | penalty strength (DPO, GRPO); writing strength; noise schedule       |
+| $\beta$                | beta    | penalty strength (DPO, GRPO); writing strength (Gated DeltaNet); noise schedule (DDPM) |
 | $\gamma$               | gamma   | RL discount; a step size (DeepSeek-V3 bias update)                   |
 | $\delta,\Delta$        | delta   | a difference or change; $\Delta^{K-1}$ can name the simplex          |
 | $\epsilon,\varepsilon$ | epsilon | noise (DDPM); clipping range (PPO/GRPO); small stabilizer            |
