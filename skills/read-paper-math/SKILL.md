@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.0
+version: 0.8.1
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -348,7 +348,9 @@ When you are given a `check-paper-math` report on your reading:
 2. Fix the _unclear_ defects whose fix does not lengthen the reading for
    readers who did not need it.
 3. Re-run the numeric check if you changed it, and paste the new output.
-4. Leave the rest of the reading unchanged.
+4. For each defect, look for other passages of the same kind, such as other
+   unsourced library claims or other "the paper never says" statements, and
+   fix them too. Leave the rest of the reading unchanged.
 
 If you think a defect is itself wrong, keep your text and add a one-line note
 under the "Sources" heading quoting the paper passage that supports you.
