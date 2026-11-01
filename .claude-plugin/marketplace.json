@@ -1,0 +1,15 @@
+{
+  "name": "paper-math-skills",
+  "description": "Skills for reading and checking the math in AI papers.",
+  "owner": {
+    "name": "Viacheslav Dubrov",
+    "url": "https://github.com/slavadubrov"
+  },
+  "plugins": [
+    {
+      "name": "paper-math-skills",
+      "source": "./",
+      "description": "Read and check the equations in AI and ML papers."
+    }
+  ]
+}
