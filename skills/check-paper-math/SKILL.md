@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.1
+version: 0.7.3
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -154,7 +154,8 @@ PASS only when all three hold:
   source shows the reference fact is wrong).
 
 _Unclear_ defects and missing non-essential facts do not block PASS. List them
-anyway, so they can be fixed.
+anyway, so they can be fixed: unclear defects in the table, missing facts in the
+"Reference facts" line. If the reading cites page numbers, check them too.
 
 ## Report
 

@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.7.2
+version: 0.7.3
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -45,7 +45,8 @@ directory this SKILL.md was loaded from.
 1. **Quote definitions; cite locations.** Every symbol's meaning comes with the
    sentence that defines it, quoted verbatim, and its location (section,
    equation, footnote, appendix, algorithm, figure) in a pinned version of the
-   paper: an arXiv ID with its version wherever one exists.
+   paper: an arXiv ID with its version wherever one exists. Do not cite page
+   numbers; they differ between renderings and are easy to get wrong.
 2. **Never fill a gap with a usual meaning.** If the paper does not define a
    symbol, put it in the "Not defined in the paper" list and say where you
    looked. For example, a model given DPO's equation (7) without its definitions
