@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.6
+version: 0.7.7
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -43,6 +43,14 @@ directory this SKILL.md was loaded from.
   against that.
 - Optional: reference facts, for example from an earlier verified walkthrough.
   Treat them as claims to check, not as truth. They can be wrong too.
+
+## Tools
+
+`allowed-tools` lists commands that run without asking for permission; it is
+not a limit. Read-only shell commands such as `ls`, `cat`, `grep` and `sed -n`
+are fine for reading downloads. To check a figure, render the PDF page, with
+`pdftoppm` or by reading `paper.pdf` with page numbers; a figure file from the
+TeX source also counts.
 
 ## Where files go
 
