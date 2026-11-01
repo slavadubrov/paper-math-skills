@@ -190,8 +190,10 @@ $:=$ tells you that something is being named, not what kind of thing it is.
   has $m$ rows and $n$ columns, an array of shape `[m, n]`. Bold letters
   sometimes mark vectors; the definition decides.
 - Conventions differ. Attention stacks tokens as the _rows_ of $Q$. MLA, Gated
-  DeltaNet and LoRA write $Wh$ with column vectors. `nn.Linear` computes
-  `x @ W.T` on rows.
+  DeltaNet and LoRA write $Wh$ with column vectors. `nn.Linear` stores a weight
+  of shape `(out_features, in_features)` and computes `x @ W.T` on rows
+  ([PyTorch 2.15 `nn.Linear`](https://docs.pytorch.org/docs/2.15/generated/torch.nn.Linear.html));
+  cite that page when a reading relies on it.
 
 | Expression        | Inputs                  | Result                                         |
 | ----------------- | ----------------------- | ---------------------------------------------- |
