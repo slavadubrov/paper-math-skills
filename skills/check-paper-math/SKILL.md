@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.6.1
+version: 0.7.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -59,7 +59,8 @@ where the user asks.
 2. **Quotes.** Search for every quote in `paper.txt`, which is the
    published text. Before comparing, normalize both sides:
    - collapse whitespace and line breaks;
-   - rejoin words split by a line-end hyphen;
+   - rejoin words split by a line-end hyphen, accepting either form when the
+     word may carry a real hyphen, as "pre-trained" does;
    - expand ligatures such as ﬁ and ﬂ;
    - allow for math that the PDF flattened.
 
@@ -112,7 +113,9 @@ where the user asks.
    - a compared result whose $\pm$ is read as the wrong quantity (standard
      deviation, standard error or confidence interval), or a difference called
      real when its interval contains zero;
-   - a statement about another paper with no source.
+   - a statement about another paper with no source;
+   - a claim that the paper never mentions or specifies something: search the
+     whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of
    the data source, the generating model copy and the detached terms against the
    paper's notation, text and algorithm box.

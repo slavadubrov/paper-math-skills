@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.6.0
+version: 0.7.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -60,6 +60,11 @@ directory this SKILL.md was loaded from.
    yours.
 5. **Explain before naming.** Say what a thing does in plain words before you
    give its technical name, and define every term before you use it.
+6. **Search before you say "the paper does not".** A claim that the paper never
+   mentions, defines or specifies something needs a search of the whole paper,
+   including footnotes, appendices and figure captions. Say where you searched.
+   Likewise, before you state a setting as the paper's rule, check whether an
+   appendix or an experiment departs from it, and say so if one does.
 
 ## Where files go
 
