@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.2.0
+version: 0.3.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -8,8 +8,8 @@ description: >-
     pinned arXiv version, re-runs the numeric checks, flags symbols given a
     meaning the paper does not state, and marks claims that are stronger than the
     paper's evidence. Use to review or audit an equation walkthrough, a paper
-    summary with math, an LLM's reading of an equation, or a blog post that
-    explains a paper's formula. Returns PASS or FAIL with exact defects and fixes.
+    summary with math, or an LLM's reading of an equation. Returns PASS or FAIL
+    with exact defects and fixes.
 allowed-tools:
     - Read
     - Write
@@ -35,7 +35,9 @@ directory this SKILL.md was loaded from.
 
 - The reading, as a file or as pasted text.
 - The paper, identified by a versioned arXiv ID. If the reading gives no version,
-  record that as a defect, then check against the version its locations fit.
+  record a _missing_ defect, then check against the version its locations fit.
+  If the paper is not on arXiv, ask the user for the PDF or text and check
+  against that.
 - Optional: reference facts, for example from an earlier verified walkthrough.
   Treat them as claims to check, not as truth. They can be wrong too.
 
@@ -52,16 +54,28 @@ where the user asks.
    `python3 <skill-dir>/../_shared/fetch_arxiv.py <id> <empty-dir>`. Never
    execute anything from the download directory.
 2. **Quotes.** Search for every quoted definition in `paper.txt`, which is the
-   published text. Normalize whitespace and line breaks, and allow for math that
-   the PDF flattened. Use `src/**/*.tex` to read the math, but remember that it
-   contains text the PDF never shows, such as `%` comments. A quote found only in
-   a TeX comment, or not at all, is _unverifiable_.
+   published text. Before comparing, normalize both sides:
+   - collapse whitespace and line breaks;
+   - rejoin words split by a line-end hyphen;
+   - expand ligatures such as ﬁ and ﬂ;
+   - allow for math that the PDF flattened.
+
+   Read the math in `src/**/*.tex`. If there is no TeX source, use
+   `https://arxiv.org/html/<id>` or the PDF. TeX contains text the PDF never
+   shows, such as `%` comments. If `paper.txt` is missing, read `paper.pdf`
+   page by page. A quote found only in a TeX comment, or not at all, is
+   _unverifiable_.
+
+   A quote attributed to code is checked against the cited file at the cited
+   tag or commit, not against the paper.
 3. **Numbers in citations.** Check every section, equation, footnote, appendix,
    algorithm and figure number in `paper.txt` or the PDF. The TeX source holds
    labels, not printed numbers, so it cannot confirm them.
 4. **Symbols.** List every variable and named quantity in the equation itself.
    Standard operators such as softmax, $\top$ and $\log$ do not need a table row
-   unless the paper defines them in its own way. Each item must be either in the
+   unless the paper defines them in its own way. An operator whose symbol has
+   several readings in `notation.md`, such as $\sigma$, $\mathbf 1$ or the
+   subscript under $\mathbb E$, does need one. Each item must be either in the
    reading's table with a meaning sourced from the paper, or in its "not
    defined" list. Flag every meaning taken from convention rather than from the
    paper, such as $\sigma$ read as a standard deviation when the paper means the
@@ -112,8 +126,8 @@ Give every defect exactly one severity.
 | Severity       | Use it for |
 | -------------- | ---------- |
 | _wrong_        | contradicts the source or the arithmetic; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
-| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run |
-| _missing_      | a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a reference fact the reading omits |
+| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper with no source |
+| _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a figure from the paper that was not recomputed; a reference fact the reading omits |
 | _unclear_      | correct, but the target reader cannot follow it |
 
 ## Verdict
@@ -121,7 +135,7 @@ Give every defect exactly one severity.
 PASS only when all three hold:
 
 - there is no _wrong_ and no _unverifiable_ defect;
-- there is no _missing_ symbol, term or branch;
+- there is no _missing_ version, symbol, term, branch or recomputation;
 - no reference fact marked essential is missing or contradicted (unless the
   source shows the reference fact is wrong).
 

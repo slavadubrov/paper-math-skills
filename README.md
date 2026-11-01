@@ -17,8 +17,8 @@ Both skills share `skills/_shared/`:
 
 [paper-math-readings](https://github.com/slavadubrov/paper-math-readings) holds
 the output of these skills on 15 papers, including DPO, GRPO, MLA, RoPE and
-DDPM. It also records how each reading compared with an independently verified
-walkthrough.
+DDPM. It also records how each reading compared with the walkthrough of the same
+equations in the article series.
 
 ## Install
 
@@ -39,9 +39,10 @@ for d in read-paper-math check-paper-math _shared; do
 done
 ```
 
-The numeric checks run with `uv run --with numpy`, so install
-[uv](https://docs.astral.sh/uv/) as well. `pdftotext` (from poppler) is optional;
-without it, the skills work from the TeX source and the PDF.
+The numeric checks run with `uv run --no-project --with numpy`, so install
+[uv](https://docs.astral.sh/uv/) as well. Install `pdftotext` (from poppler) too:
+quotes and section numbers are checked against the PDF's text. Without it, the
+agent reads the PDF page by page, which is slower.
 
 ## Use
 

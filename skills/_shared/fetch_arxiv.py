@@ -59,7 +59,7 @@ def unpack_source(blob: bytes, src_dir: Path) -> list[str]:
         with gzip.GzipFile(fileobj=io.BytesIO(blob)) as gz:
             blob = gz.read(MAX_BYTES + 1)
         if len(blob) > MAX_BYTES:
-            sys.exit("source archive unpacks to more than 500 MB; refusing")
+            raise ValueError("source archive unpacks to more than 500 MB; refusing")
     try:
         with tarfile.open(fileobj=io.BytesIO(blob)) as tar:
             return safe_extract(tar, src_dir)
@@ -83,7 +83,7 @@ def fetch(arxiv_id: str, dest: Path) -> None:
         raise
     if shutil.which("pdftotext"):
         subprocess.run(
-            ["pdftotext", "-layout", str(dest / "paper.pdf"), str(dest / "paper.txt")],
+            ["pdftotext", str(dest / "paper.pdf"), str(dest / "paper.txt")],
             check=False,
         )
 

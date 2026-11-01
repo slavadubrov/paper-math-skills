@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.2.0
+version: 0.3.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -41,7 +41,8 @@ directory this SKILL.md was loaded from.
 
 1. **Quote definitions; cite locations.** Every symbol's meaning comes with the
    sentence that defines it, quoted verbatim, and its location (section,
-   equation, footnote, appendix, algorithm, figure) in a pinned arXiv version.
+   equation, footnote, appendix, algorithm, figure) in a pinned version of the
+   paper: an arXiv ID with its version wherever one exists.
 2. **Never fill a gap with a usual meaning.** If the paper does not define a
    symbol, put it in the "Not defined in the paper" list and say where you
    looked. For example, a model given DPO's equation (7) without its definitions
@@ -76,8 +77,8 @@ directory this SKILL.md was loaded from.
   Supplementary A.3.
 - If the user gives no version, open `https://arxiv.org/abs/<id>` with WebFetch,
   take the latest version listed, and say in the reading which version you
-  pinned. If the paper is not on arXiv, use the publisher's PDF and say that the
-  reading cannot be pinned to a version.
+  pinned. If the paper is not on arXiv, ask the user for the PDF or text, work
+  from that, and say in the reading that it is not pinned to a version.
 - Fetch with `python3 <skill-dir>/../_shared/fetch_arxiv.py <id> <empty-dir>`.
   This writes three things:
   - `src/`, the TeX source, when the authors uploaded one;
@@ -121,16 +122,18 @@ Look in all of these places, and record where each definition was found:
 - algorithm boxes, which give the order of operations and the sampling;
 - official code, if the paper links it.
 
-For official code, cite the file and a tag or commit from around the paper's
-date. If the paper links no code, mark implementation choices as open. Do not
-go searching for unofficial implementations.
+For official code, open only the repository the paper links. Take the tag or
+commit closest to the date of the pinned version, cite the file and that tag or
+commit, and stop there. If the paper links no code, or the matching version
+takes more than a few lookups to find, mark implementation choices as open. Do
+not search for unofficial implementations.
 
 Then fill in the symbol table. It lists the variables and named quantities in
 the equation. Standard operators such as softmax, $\top$, $\sqrt{\cdot}$,
 $\log$ and $\exp$ belong in the inside-out reading instead, unless the paper
-defines one in its own way.
-
-
+defines one in its own way. An operator whose symbol has several readings in
+`notation.md`, such as $\sigma$, $\mathbf 1$ or the subscript under
+$\mathbb E$, still gets a row.
 
 | Symbol | Shape or type | Meaning | Role | Defined at |
 | ------ | ------------- | ------- | ---- | ---------- |
@@ -258,7 +261,8 @@ a link.
 
 ## Before you finish
 
-Answer the six questions for yourself; the reading should already contain each answer. If one has no answer, the reading is not done.
+Answer the six questions for yourself; the reading should already contain
+each answer. If one has no answer, the reading is not done.
 
 1. What does the equation return, and with what shape?
 2. Is each symbol data, a trained weight, a frozen model, a setting or a sample?
@@ -269,12 +273,29 @@ Answer the six questions for yourself; the reading should already contain each a
 
 Then check these:
 
-- [ ] Every quote appears verbatim in the PDF text of the pinned version, and
-      every cited number was read from the PDF.
+- [ ] Every quote appears in the PDF text of the pinned version, word for word
+      apart from math the PDF flattened, and every cited number was read from
+      the PDF.
 - [ ] Every symbol in the equation is in the table or in the undefined list.
 - [ ] Every computed number came from code you ran, and the output is shown.
 - [ ] The small-number check covers every term and every branch.
 - [ ] No claim is stronger than the paper's own wording.
-- [ ] Every term is explained before it is used, and every link has a version.
+- [ ] Every concept is explained before it is used, and every link has a
+      version.
 
 For an independent review, use the `check-paper-math` skill.
+
+## Revising after a check
+
+When you are given a `check-paper-math` report on your reading:
+
+1. Fix every _wrong_, _unverifiable_ and _missing_ defect. Work from the paper,
+   not from the report's wording: re-read the cited place and correct the
+   reading to match it.
+2. Fix the _unclear_ defects whose fix does not lengthen the reading for
+   readers who did not need it.
+3. Re-run the numeric check if you changed it, and paste the new output.
+4. Leave the rest of the reading unchanged.
+
+If you think a defect is itself wrong, keep your text and add a one-line note
+under the "Sources" heading quoting the paper passage that supports you.
