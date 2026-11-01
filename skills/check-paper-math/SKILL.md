@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.5.0
+version: 0.6.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -56,7 +56,7 @@ where the user asks.
 1. **Fetch the same version.** Run
    `python3 <skill-dir>/../_shared/fetch_arxiv.py <id> <empty-dir>`. Never
    execute anything from the download directory.
-2. **Quotes.** Search for every quoted definition in `paper.txt`, which is the
+2. **Quotes.** Search for every quote in `paper.txt`, which is the
    published text. Before comparing, normalize both sides:
    - collapse whitespace and line breaks;
    - rejoin words split by a line-end hyphen;
@@ -95,9 +95,11 @@ where the user asks.
    output printed in the reading. Then check what the example covers:
    - every term: every part of the equation that adds to or multiplies the
      result;
-   - every branch: each argument of a min or max wins at least once; a clipped
-     value falls below, inside and above its range; an indicator is 0 once and 1
-     once; when a sign decides the branch, both signs appear;
+   - every branch the equation itself defines: each argument of a min or max
+     wins at least once; a clipped value falls below, inside and above its
+     range; an indicator is 0 once and 1 once; when a sign decides the branch,
+     both signs appear. A split the paper describes without a rule is not a
+     branch;
    - every figure the reading attributes to the paper has been recomputed.
 7. **Claims.** For every statement about what the paper does, shows or argues,
    compare its strength with the paper's own wording. Look for:
@@ -119,7 +121,8 @@ where the user asks.
    - a fact repeated in several sections;
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
-    _contradicted_. For a contradiction, decide from the source which side is
+    _contradicted_. A fact counts as present when the reading establishes the
+    same point, even with a different example or different numbers. For a contradiction, decide from the source which side is
     right, and say which.
 
 ## Severity

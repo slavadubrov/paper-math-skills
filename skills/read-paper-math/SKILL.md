@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.5.0
+version: 0.6.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -125,7 +125,8 @@ Look in all of these places, and record where each definition was found:
 - algorithm boxes, which give the order of operations and the sampling;
 - official code, if the paper links it.
 
-For official code, open only the repository the paper links. Take the latest
+For official code, open only the repository the paper links, plus any
+repository that its README names as the official implementation. Take the latest
 release tag on or before the date the pinned version was posted; if there is
 none, the latest commit on or before that date; if the code was released later,
 its first tag or commit. Cite the file and that tag or commit, and stop there. If the paper links no code, or the matching version
@@ -154,10 +155,14 @@ Pick the **role** from this list:
 - fixed setting or hyperparameter;
 - random sample;
 - computed intermediate;
-- function the paper defines or names, such as an encoder $f_q$;
+- function, operator or set the paper defines or names, such as an encoder
+  $f_q$ or a set of allowed matrices $\mathcal M$;
 - index.
 
-In **Defined at**, give the quote and its location. Every symbol in the equation
+In **Defined at**, give the quote and its location. A symbol defined only by the
+equation that introduces it, with no sentence, cites that equation. A symbol
+defined in a cited paper rather than this one cites that paper, with its
+version. Every symbol in the equation
 appears either in the table or in the "Not defined in the paper" list, not
 both. A symbol whose meaning the paper gives but whose shape it does not goes in
 the table with "not stated" in the shape column. A symbol

@@ -21,7 +21,8 @@ differently.
 ## The equation
 
 $$
-<the equation exactly as printed, with its number>
+<the equation exactly as printed, with its number; when the scope covers
+several equations, give each one in its own block, in the paper's order>
 $$
 
 ## Symbols
