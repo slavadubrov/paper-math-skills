@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.7
+version: 0.7.8
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -112,19 +112,21 @@ where the user asks.
      range; an indicator is 0 once and 1 once; when a sign decides the branch,
      both signs appear. A split the paper describes without a rule is not a
      branch;
-   - every number the reading attributes to the paper and derives from the
-     paper's formulas, such as a parameter count or a memory size, has been
-     recomputed. Measured results, such as a benchmark score, are checked as
-     quotes instead.
+   - the reading's own code recomputes every number that the reading attributes
+     to the paper and that follows from the paper's formulas, such as a
+     parameter count or a memory size. Measured results, such as a benchmark
+     score, are checked as quotes instead.
 7. **Claims.** For every statement about what the paper does, shows or argues,
    compare its strength with the paper's own wording. Look for:
-   - "shows" or "proves" where the paper says "suspects" or "argues";
+   - "shows" or "proves" where the paper says "suspects" or "argues", and the
+     reverse: a hedge the paper does not make;
    - a fitted law used outside its fitted range as if it were a prediction;
    - a measured cost that is reported as a different cost or phase;
    - a compared result whose $\pm$ is read as the wrong quantity (standard
      deviation, standard error or confidence interval), or a difference called
      real when its interval contains zero;
-   - a statement about another paper with no source;
+   - a statement about another paper or about a library's behaviour with no
+     source;
    - a claim that the paper never mentions or specifies something: search the
      whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of
@@ -140,7 +142,9 @@ where the user asks.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
     _contradicted_. A fact counts as present when the reading establishes the
     same point, even with a different example or different numbers. A fact the
-    reading covers only in part is _missing_; say which part is absent. For a contradiction, decide from the source which side is
+    reading covers only in part is _missing_; say which part is absent. A
+    reading that gives the right formula but explains it wrongly
+    _contradicts_ the fact. For a contradiction, decide from the source which side is
     right, and say which.
 
 ## Severity
@@ -149,8 +153,8 @@ Give every defect exactly one severity.
 
 | Severity       | Use it for |
 | -------------- | ---------- |
-| _wrong_        | contradicts the source, the arithmetic or another part of the reading; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
-| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper with no source |
+| _wrong_        | contradicts the source, the arithmetic or another part of the reading; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger or weaker than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
+| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper or a library's behaviour with no source |
 | _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a derived number from the paper that was not recomputed; a reference fact the reading omits or covers only in part |
 | _unclear_      | correct, but the target reader cannot follow it |
 

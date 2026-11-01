@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.7.5
+version: 0.7.8
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -64,7 +64,8 @@ directory this SKILL.md was loaded from.
    what it measures, and what it only suspects or argues. Keep its hedges ("we
    suspect", "intuitively", "empirically", "in our experiments"). An intuition
    the paper offers for a gradient or an update is not a guarantee about every
-   step. Mark your own derivations as yours.
+   step. Do not add hedges the paper does not make either: if it states an
+   equivalence, say so. Mark your own derivations as yours.
 5. **Explain before naming.** Say what a thing does in plain words before you
    give its technical name, and define every term before you use it.
 6. **Search before you say "the paper does not".** A claim that the paper never
