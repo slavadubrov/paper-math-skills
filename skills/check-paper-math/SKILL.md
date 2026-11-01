@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.4.0
+version: 0.5.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -17,6 +17,9 @@ allowed-tools:
     - Glob
     - Bash(python3 *)
     - Bash(uv run *)
+    - Bash(grep *)
+    - Bash(sed -n *)
+    - Bash(ls *)
     - WebFetch
 ---
 

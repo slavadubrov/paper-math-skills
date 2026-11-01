@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.4.0
+version: 0.5.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -19,6 +19,9 @@ allowed-tools:
     - Glob
     - Bash(python3 *)
     - Bash(uv run *)
+    - Bash(grep *)
+    - Bash(sed -n *)
+    - Bash(ls *)
     - WebFetch
 ---
 
@@ -122,9 +125,10 @@ Look in all of these places, and record where each definition was found:
 - algorithm boxes, which give the order of operations and the sampling;
 - official code, if the paper links it.
 
-For official code, open only the repository the paper links. Take the tag or
-commit closest to the date of the pinned version, cite the file and that tag or
-commit, and stop there. If the paper links no code, or the matching version
+For official code, open only the repository the paper links. Take the latest
+release tag on or before the date the pinned version was posted; if there is
+none, the latest commit on or before that date; if the code was released later,
+its first tag or commit. Cite the file and that tag or commit, and stop there. If the paper links no code, or the matching version
 takes more than a few lookups to find, mark implementation choices as open. Do
 not search for unofficial implementations.
 
@@ -144,14 +148,19 @@ Pick the **role** from this list:
 - function input (an argument the equation is written for, such as attention's
   $Q$, $K$, $V$), with where its values come from;
 - trained weight;
+- state updated by a rule rather than by gradients, such as DeepSeek-V3's
+  load-balancing bias;
 - frozen model or frozen copy;
 - fixed setting or hyperparameter;
 - random sample;
 - computed intermediate;
+- function the paper defines or names, such as an encoder $f_q$;
 - index.
 
 In **Defined at**, give the quote and its location. Every symbol in the equation
-appears either in the table or in the "Not defined in the paper" list. A symbol
+appears either in the table or in the "Not defined in the paper" list, not
+both. A symbol whose meaning the paper gives but whose shape it does not goes in
+the table with "not stated" in the shape column. A symbol
 you introduce yourself, for example to name a quantity the paper describes only
 in words, gets a row marked "(introduced here)" instead of a quote.
 
