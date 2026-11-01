@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.8
+version: 0.7.9
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -79,7 +79,8 @@ where the user asks.
    _unverifiable_.
 
    A quote attributed to code is checked against the cited file at the cited
-   tag or commit, not against the paper. A quote marked "(figure image)" is
+   tag or commit, not against the paper. Code shortened with `…` counts as
+   found when each visible part matches; code edited without a mark does not. A quote marked "(figure image)" is
    checked against the rendered page. A quote from another paper is checked
    against that paper, fetched at the version the reading cites.
 3. **Numbers in citations.** Check every section, equation, footnote, appendix,

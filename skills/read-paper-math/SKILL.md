@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.7.8
+version: 0.7.9
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -148,6 +148,9 @@ Look in all of these places, and record where each definition was found:
 - appendices, which often collect the full computation;
 - algorithm boxes, which give the order of operations and the sampling;
 - official code, if the paper links it.
+
+Quote code exactly as it appears at the cited commit. If you shorten it, mark
+each cut with `…`; never present edited code as a quote.
 
 For official code, open only the repository the paper links, plus any
 repository that its README names as the official implementation. Take the latest
