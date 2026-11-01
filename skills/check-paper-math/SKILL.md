@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.4
+version: 0.7.6
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -90,7 +90,8 @@ where the user asks.
 5. **Shapes and axes.** Re-derive the shape of every intermediate result, and the
    index, axis or distribution of every reduction. Flag mismatches and unstated
    row or column conventions.
-6. **Numbers.** Read each code block before you run it. Run a block only if it
+6. **Numbers.** Read each fenced code block before you run it; inline code in
+   prose is not a code block. Run a block only if it
    uses nothing but the standard library and NumPy, and touches no files and no
    network; mark any other block _unverifiable_. Copy each runnable block into
    your scratch directory and run it with
@@ -140,7 +141,7 @@ Give every defect exactly one severity.
 
 | Severity       | Use it for |
 | -------------- | ---------- |
-| _wrong_        | contradicts the source or the arithmetic; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
+| _wrong_        | contradicts the source, the arithmetic or another part of the reading; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
 | _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper with no source |
 | _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a derived number from the paper that was not recomputed; a reference fact the reading omits or covers only in part |
 | _unclear_      | correct, but the target reader cannot follow it |
