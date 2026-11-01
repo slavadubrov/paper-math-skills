@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.7.9
+version: 0.8.0
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -250,7 +250,9 @@ answers only part of the question.
   library and NumPy, in your scratch directory. Do not add PyTorch, JAX or other
   framework code, even if the user writes in one: `check-paper-math` runs only
   standard-library and NumPy code, so anything else cannot be verified. A
-  one-line framework equivalent in prose is fine. Run it with
+  framework equivalent in prose is fine if it cites the library's versioned
+  documentation for each behaviour it relies on, such as a default reduction;
+  otherwise leave it out. Run it with
   `uv run --no-project --with numpy python <scratch>/check.py`. The
   `--no-project` flag keeps `uv` from installing the surrounding project. Paste
   the code and the output you actually got.

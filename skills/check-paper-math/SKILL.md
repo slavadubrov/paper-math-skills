@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.7.9
+version: 0.8.0
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
