@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.1
+version: 0.8.4
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -354,3 +354,6 @@ When you are given a `check-paper-math` report on your reading:
 
 If you think a defect is itself wrong, keep your text and add a one-line note
 under the "Sources" heading quoting the paper passage that supports you.
+
+The reading is for its reader, not for the review: never mention the check,
+defect numbers, earlier versions or local paths in it.
