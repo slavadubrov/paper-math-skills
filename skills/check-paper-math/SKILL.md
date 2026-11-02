@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.2
+version: 0.8.3
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -72,6 +72,8 @@ where the user asks.
    - expand ligatures such as ﬁ and ﬂ;
    - allow for math that the PDF flattened;
    - allow a quote to change the case of its first letter.
+   - skip a page number, running header or figure caption that the PDF
+     placed inside the quoted sentence.
 
    Read the math in `src/**/*.tex`. If there is no TeX source, use
    `https://arxiv.org/html/<id>` or the PDF. TeX contains text the PDF never
