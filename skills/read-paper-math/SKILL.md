@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.5
+version: 0.8.6
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -157,7 +157,9 @@ paraphrase in math or plain words instead.
 Cite a file and line at the tag or commit for each claim about what the code
 does. How a library that code calls behaves, such as whether a random draw
 includes its upper bound or what a function does on one process, needs that
-library's versioned documentation, even when it is well known.
+library's versioned documentation or the library's own source file at a pinned
+version, even when it is well known. Citing the line that calls the function is
+not enough.
 
 For official code, open only the repository the paper links, plus any
 repository that its README names as the official implementation. Take the latest

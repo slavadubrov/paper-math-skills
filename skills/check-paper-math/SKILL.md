@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.5
+version: 0.8.6
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -109,7 +109,10 @@ where the user asks.
 6. **Numbers.** Read each fenced code block before you run it; inline code in
    prose is not a code block. Run a block only if it
    uses nothing but the standard library and NumPy, and touches no files and no
-   network; mark any other block _unverifiable_. Copy each runnable block into
+   network; mark any other check block _unverifiable_. A block the reading
+   presents as a quote of the official code, with a file and line, is not a
+   check: verify it against that file as in step 2 instead of running it. Copy
+   each runnable block into
    your scratch directory and run it with
    `uv run --no-project --with numpy python <file>`. Compare the output with the
    output printed in the reading. Then check what the example covers:
@@ -138,7 +141,8 @@ where the user asks.
      claim about what the cited code does, backed by a file and line at the
      cited tag or commit, has a source; how a library that code calls behaves
      (a default, a bound, a reduction) needs that library's versioned
-     documentation;
+     documentation or its own source file at a pinned version. The call site
+     alone is not a source for what the called function does;
    - a claim that the paper never mentions or specifies something: search the
      whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of
