@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.19
+version: 0.8.20
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -144,7 +144,8 @@ where the user asks.
      claim about what the cited code does, backed by a file and line at the
      cited tag or commit, has a source; how a library that code calls behaves
      (a default, a bound, a reduction) needs that library's versioned
-     documentation or its own source file at a pinned version. This includes
+     documentation or its own source file at a pinned version; open each cited
+     page or file once to confirm it. This includes
      framework functions in a README's example code. The call site alone is not
      a source for what the called function does. The basic meaning of a
      standard operation needs no source: a function whose name and arguments
@@ -185,7 +186,7 @@ Give every defect exactly one severity.
 | Severity       | Use it for |
 | -------------- | ---------- |
 | _wrong_        | contradicts the source, the arithmetic or another part of the reading; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger or weaker than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
-| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper or a library's behaviour with no source; a claim about the cited code with no file and line, or with lines that do not show it (_wrong_ if the code contradicts it) |
+| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper or a library's behaviour with no source; a claim about the cited code with no file and line of its own (or a nearby citation that clearly covers it), or with lines that do not show it (_wrong_ if the code contradicts it) |
 | _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a number the reading attributes to the paper that follows from the paper's formulas and was not recomputed; a reference fact the reading omits or covers only in part |
 | _unclear_      | correct, but the target reader cannot follow it. A sentence whose most natural reading is false, such as an "it" that points at the wrong thing, is _wrong_ |
 
