@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.14
+version: 0.8.15
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -98,7 +98,8 @@ where the user asks.
    $T$) and $\log$ do not need a table row unless the paper defines them in its
    own way. Any symbol or mark with several readings in `notation.md`, such as
    $\sigma$, $\mathbf 1$, the bar $\mid$ or the subscript under $\mathbb E$,
-   does need one. Each item must be either in the
+   does need one. One row may cover several symbols if it names each and gives
+   each one's meaning. Each item must be either in the
    reading's table with a meaning sourced from the paper, or in its "not
    defined" list. Flag every meaning taken from convention rather than from the
    paper, such as $\sigma$ read as a standard deviation when the paper means the
