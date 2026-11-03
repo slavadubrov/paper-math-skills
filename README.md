@@ -2,7 +2,8 @@
 
 Two agent skills for the equations in AI and ML papers. They turn the method from
 the article series [Reading the Math in AI Papers](https://slavadubrov.com/blog/2026/10/22/reading-math-in-ai-papers/)
-into procedures that Claude Code, Codex or another agent can follow.
+into procedures written for Claude Code; other agents that load `SKILL.md`
+files can use them too.
 
 | Skill              | What it does |
 | ------------------ | ------------ |
@@ -45,7 +46,7 @@ for d in read-paper-math check-paper-math _shared; do
 done
 ```
 
-The scripts need Python 3.9 or later. The numeric checks run with
+The scripts need Python 3.10 or later. The numeric checks run with
 `uv run --no-project --with "numpy>=2,<3"`, so install
 [uv](https://docs.astral.sh/uv/) as well. Install `pdftotext` (from poppler) too:
 quotes and section numbers are checked against the PDF's text. Without it, the
@@ -86,8 +87,8 @@ decide, and what the paper claims compared with what it shows.
   `vet_block.py` accepts them, and asks you in chat first unless your request
   already told it to run them. The vetter is a filter, not a sandbox: check a
   reading from an untrusted source in a container or a throwaway machine.
-- The plugin version changes with every rule change; update the plugin to get
-  new rules.
+- Since 0.9.1, every rule change bumps the plugin version; update the plugin to
+  get new rules.
 
 ## License
 
