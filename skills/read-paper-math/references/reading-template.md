@@ -2,7 +2,7 @@
 
 Copy this structure and keep every heading, so readings can be compared.
 
-```markdown
+````markdown
 # <Paper short name>: <what the equation does, in plain words>
 
 **Source:** <Authors>, [<Title>](https://arxiv.org/abs/<id>v<N>), v<N>,
@@ -77,4 +77,4 @@ Output:
 ## Sources
 
 - <every paper, code file or page you opened, versioned>
-```
+````

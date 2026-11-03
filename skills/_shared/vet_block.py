@@ -27,7 +27,8 @@ BUILTINS = {
     "repr", "reversed", "round", "set", "slice", "sorted", "str", "sum",
     "tuple", "type", "zip", "True", "False", "None",
     "ArithmeticError", "AssertionError", "Exception", "FloatingPointError",
-    "OverflowError", "ValueError", "ZeroDivisionError",
+    "IndexError", "KeyError", "OverflowError", "TypeError", "ValueError",
+    "ZeroDivisionError",
 }
 
 ATTRS = {
@@ -36,7 +37,8 @@ ATTRS = {
     "arctan", "arctan2", "argmax", "argmin", "argsort", "argwhere", "around",
     "array", "array_equal", "asarray", "atleast_2d", "bincount", "broadcast_to",
     "ceil", "clip", "column_stack", "concatenate", "conj", "conjugate",
-    "corrcoef", "cos", "cosh", "cov", "cross", "cumprod", "cumsum", "diag",
+    "corrcoef", "cos", "cosh", "count_nonzero", "cov", "cross", "cumprod",
+    "cumsum", "diag",
     "diagonal", "diff", "dot", "e", "einsum", "empty", "empty_like", "errstate",
     "exp", "exp2", "expand_dims", "expm1", "eye", "finfo", "flip", "floor",
     "full", "full_like", "hstack", "hypot", "identity", "inf", "inner",
@@ -47,7 +49,8 @@ ATTRS = {
     "pad", "percentile", "pi", "polyfit", "polyval", "power", "prod",
     "quantile", "ravel", "repeat", "reshape", "roll", "round", "set_printoptions",
     "sign", "sin", "sinh", "sort", "sqrt", "square", "squeeze", "stack", "std",
-    "sum", "swapaxes", "take", "take_along_axis", "tanh", "tensordot", "tile",
+    "sum", "swapaxes", "take", "take_along_axis", "tan", "tanh", "tensordot",
+    "tile",
     "trace", "transpose", "tril", "tril_indices", "triu", "triu_indices",
     "trunc", "unique", "var", "vdot", "vstack", "where", "zeros", "zeros_like",
     # dtypes
@@ -59,10 +62,11 @@ ATTRS = {
     "integers", "multinomial", "normal", "permutation", "poisson", "shuffle",
     "standard_normal", "uniform",
     # array attributes and methods
-    "T", "astype", "copy", "dtype", "fill", "flatten", "imag", "item", "ndim",
-    "real", "shape", "size", "tolist",
+    "T", "astype", "copy", "dtype", "eps", "fill", "flatten", "imag", "item",
+    "itemsize", "nbytes", "ndim", "real", "shape", "size", "tiny", "tolist",
     # math, fractions, itertools, functools
-    "comb", "copysign", "erf", "erfc", "fabs", "factorial", "fsum", "gamma",
+    "atan2", "comb", "copysign", "erf", "erfc", "fabs", "factorial", "fsum",
+    "gamma",
     "gcd", "isqrt", "lcm", "lgamma", "perm", "Fraction",
     "denominator", "limit_denominator", "numerator", "accumulate", "chain",
     "combinations", "combinations_with_replacement", "permutations", "product",
@@ -99,6 +103,9 @@ def problems(source: bytes) -> list[str]:
         elif isinstance(node, ast.Attribute):
             if node.attr not in ATTRS:
                 out.append(f"line {line}: attribute .{node.attr}")
+        elif isinstance(node, ast.Match):
+            # class patterns read attributes by name without an Attribute node
+            out.append(f"line {line}: match statement")
     return out
 
 
@@ -123,6 +130,7 @@ def self_test() -> None:
         b"from . import x",
         b"__builtins__",
         b"    import numpy",  # an indented block must be written unindented
+        b"import numpy as np\nmatch np:\n    case type(np)(x=b):\n        pass\n",
     ]
     for b in bad:
         assert problems(b), b

@@ -45,7 +45,8 @@ for d in read-paper-math check-paper-math _shared; do
 done
 ```
 
-The numeric checks run with `uv run --no-project --with "numpy>=2,<3"`, so install
+The scripts need Python 3.9 or later. The numeric checks run with
+`uv run --no-project --with "numpy>=2,<3"`, so install
 [uv](https://docs.astral.sh/uv/) as well. Install `pdftotext` (from poppler) too:
 quotes and section numbers are checked against the PDF's text. Without it, the
 agent reads the PDF page by page, which is slower. The run commands start with
@@ -77,8 +78,9 @@ decide, and what the paper claims compared with what it shows.
 - The skills work from the paper's text and its official code. They do not
   verify the paper's experiments.
 - The skills contact arxiv.org, GitHub (official code), library documentation
-  and PyPI. Downloads and fetched pages are treated as data: never executed,
-  never followed as instructions.
+  and PyPI. Downloads and fetched pages are treated as data: never executed
+  (except a reading's check blocks, run as described below) and never
+  followed as instructions.
 - Both skills run Python. `read-paper-math` runs the small checks it writes.
   `check-paper-math` runs the blocks in the reading it checks, only if
   `vet_block.py` accepts them, and asks you in chat first unless your request

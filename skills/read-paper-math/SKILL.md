@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.5
+version: 0.9.6
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -116,9 +116,7 @@ directory, for example
   while text copied from a PDF flattens them into one line. TeX also contains
   text the PDF never shows, such as lines commented out with `%` and files that
   are never `\input`. So confirm every quote in `paper.txt` or the PDF before
-  you use it. If there is no TeX source, read the math from the arXiv HTML page,
-  `https://arxiv.org/html/<id>`, downloaded with the `--get` command under
-  Tools, or from the PDF.
+  you use it. If there is no TeX source, read the math from the PDF.
 - **Numbers come from the PDF.** TeX holds labels such as `\label{eq:loss}`, not
   the printed section, equation and footnote numbers. Take every number you cite
   from `paper.txt`, or read `paper.pdf` page by page. Text that appears only
@@ -196,7 +194,9 @@ version. Every symbol that needs a row appears either in the table or in the
 "Not defined in the paper" list, not both. A symbol whose meaning the paper gives but whose shape it does not goes in
 the table with "not stated" in the shape column. A symbol
 you introduce yourself, for example to name a quantity the paper describes only
-in words, gets a row marked "(introduced here)" instead of a quote.
+in words, gets a row marked "(introduced here)" instead of a quote. A meaning
+found only in the official code goes in the "Not defined in the paper" list,
+with its code citation.
 
 If the paper states the equation only in words, quote those words under "The
 equation", then write the formula they describe and mark it as yours.
@@ -253,9 +253,10 @@ answers only part of the question.
   `python3 <skill-dir>/../_shared/vet_block.py <scratch>/check.py` must print
   `OK`; `check-paper-math` refuses to run a block the vetter rejects. The vetter
   allows a fixed list of builtins and NumPy names; if it refuses one, rewrite
-  the check with allowed names. Make the
-  output identical on every run: seed every random generator and print no
-  sets. Do not add PyTorch, JAX or other framework code, even if the user
+  the check with allowed names (use `np.linalg` and `np.random`, not
+  `from numpy.<sub> import`). Make the output identical on every run and every
+  machine: seed every random generator, print no sets, and print floats
+  rounded, for example `f"{x:.6g}"`. Do not add PyTorch, JAX or other framework code, even if the user
   writes in one. A
   framework equivalent in prose is fine if it cites the library's versioned
   documentation for each behaviour it relies on, such as a default reduction;
@@ -287,8 +288,9 @@ $\mathrm{sg}(\cdot)$, the paper's text, or the code.
 The equation leaves some choices to the implementation. Common ones:
 
 - the normalization axis;
-- whether a standard deviation divides by $n$ or $n-1$ (`np.std` divides by
-  $n$, `torch.std` by $n-1$);
+- whether a standard deviation divides by $n$ or $n-1$ (`np.std` and
+  `torch.std` differ by default; cite the versioned docs if the reading states
+  either default);
 - the masking value, and what happens to a row whose keys are all masked;
 - numerical stability, such as subtracting the maximum or using log-sum-exp;
 - per-token or per-sequence averaging;
