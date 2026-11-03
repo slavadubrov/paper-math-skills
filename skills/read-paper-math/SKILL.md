@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.9
+version: 0.8.10
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -173,11 +173,11 @@ takes more than a few lookups to find, mark implementation choices as open. Do
 not search for unofficial implementations.
 
 Then fill in the symbol table. It lists the variables and named quantities in
-the equation. Standard operators such as softmax, $\top$, $\sqrt{\cdot}$,
-$\log$ and $\exp$ belong in the inside-out reading instead, unless the paper
-defines one in its own way. An operator whose symbol has several readings in
-`notation.md`, such as $\sigma$, $\mathbf 1$ or the subscript under
-$\mathbb E$, still gets a row.
+the equation. Standard operators such as softmax, the transpose ($\top$ or a
+superscript $T$), $\sqrt{\cdot}$, $\log$ and $\exp$ belong in the inside-out
+reading instead, unless the paper defines one in its own way. Any symbol or
+mark with several readings in `notation.md`, such as $\sigma$, $\mathbf 1$,
+the bar $\mid$ or the subscript under $\mathbb E$, still gets a row.
 
 | Symbol | Shape or type | Meaning | Role | Defined at |
 | ------ | ------------- | ------- | ---- | ---------- |

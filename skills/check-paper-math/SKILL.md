@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.13
+version: 0.8.14
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -94,10 +94,11 @@ where the user asks.
    algorithm and figure number in `paper.txt` or the PDF. The TeX source holds
    labels, not printed numbers, so it cannot confirm them.
 4. **Symbols.** List every variable and named quantity in the equation itself.
-   Standard operators such as softmax, $\top$ and $\log$ do not need a table row
-   unless the paper defines them in its own way. An operator whose symbol has
-   several readings in `notation.md`, such as $\sigma$, $\mathbf 1$ or the
-   subscript under $\mathbb E$, does need one. Each item must be either in the
+   Standard operators such as softmax, the transpose ($\top$ or a superscript
+   $T$) and $\log$ do not need a table row unless the paper defines them in its
+   own way. Any symbol or mark with several readings in `notation.md`, such as
+   $\sigma$, $\mathbf 1$, the bar $\mid$ or the subscript under $\mathbb E$,
+   does need one. Each item must be either in the
    reading's table with a meaning sourced from the paper, or in its "not
    defined" list. Flag every meaning taken from convention rather than from the
    paper, such as $\sigma$ read as a standard deviation when the paper means the
