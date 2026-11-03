@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.3
+version: 0.8.4
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -83,7 +83,11 @@ where the user asks.
 
    A quote attributed to code is checked against the cited file at the cited
    tag or commit, not against the paper. Code shortened with `…` counts as
-   found when each visible part matches; code edited without a mark does not. A quote marked "(figure image)" is
+   found when each visible part matches; code edited without a mark does not.
+   Inline code in backticks that the reading attributes to the code, by file,
+   line or "the code does …", is a quote too; a backticked expression in the
+   reading's own notation that is not attributed is not. A quote marked
+   "(figure image)" is
    checked against the rendered page. A quote from another paper is checked
    against that paper, fetched at the version the reading cites.
 3. **Numbers in citations.** Check every section, equation, footnote, appendix,
@@ -130,7 +134,11 @@ where the user asks.
      deviation, standard error or confidence interval), or a difference called
      real when its interval contains zero;
    - a statement about another paper or about a library's behaviour with no
-     source;
+     source, even one you can confirm yourself, because the reader cannot. A
+     claim about what the cited code does, backed by a file and line at the
+     cited tag or commit, has a source; how a library that code calls behaves
+     (a default, a bound, a reduction) needs that library's versioned
+     documentation;
    - a claim that the paper never mentions or specifies something: search the
      whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of

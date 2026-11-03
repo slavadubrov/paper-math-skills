@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.4
+version: 0.8.5
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -150,7 +150,14 @@ Look in all of these places, and record where each definition was found:
 - official code, if the paper links it.
 
 Quote code exactly as it appears at the cited commit. If you shorten it, mark
-each cut with `…`; never present edited code as a quote.
+each cut with `…`; never present edited code as a quote. Inline code in
+backticks that you attribute to the code is a quote too; write your own
+paraphrase in math or plain words instead.
+
+Cite a file and line at the tag or commit for each claim about what the code
+does. How a library that code calls behaves, such as whether a random draw
+includes its upper bound or what a function does on one process, needs that
+library's versioned documentation, even when it is well known.
 
 For official code, open only the repository the paper links, plus any
 repository that its README names as the official implementation. Take the latest
