@@ -24,8 +24,7 @@ Both skills share `skills/_shared/`:
 
 [paper-math-readings](https://github.com/slavadubrov/paper-math-readings) holds
 the output of these skills on 15 equations, among them those of DPO, GRPO, MLA, RoPE and
-DDPM. It also records how each reading compared with the walkthrough of the same
-equations in the article series.
+DDPM.
 
 ## Install
 
@@ -87,8 +86,6 @@ decide, and what the paper claims compared with what it shows.
   `vet_block.py` accepts them, and asks you in chat first unless your request
   already told it to run them. The vetter is a filter, not a sandbox: check a
   reading from an untrusted source in a container or a throwaway machine.
-- Since 0.9.1, every rule change bumps the plugin version; update the plugin to
-  get new rules.
 
 ## License
 
