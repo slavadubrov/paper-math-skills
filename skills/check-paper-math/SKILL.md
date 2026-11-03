@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.9.10
+version: 0.9.11
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -76,8 +76,8 @@ where the user asks.
    - allow a quote to change the case of its first letter, and to mark a
      grammatical edit in square brackets, as in "take[s]", or an inserted
      "[sic]".
-   - skip a page number, running header or figure caption that the PDF
-     placed inside the quoted sentence.
+   - skip a page number, running header, footnote or footnote mark, or figure
+     caption that the PDF placed inside the quoted sentence.
 
    Read the math in `src/**/*.tex`. If there is no TeX source, use the PDF. TeX contains text the PDF never
    shows, such as `%` comments. If `paper.txt` is missing, read `paper.pdf`
@@ -102,9 +102,9 @@ where the user asks.
    `<skill-dir>/../_shared/notation.md` that appears in it (such as $\sigma$,
    $\mathbf 1$, $\mid$, $\Vert$ or $\sim$), and the subscript under
    $\mathbb E$. Each must be either in the reading's table, with a meaning
-   sourced from this paper or a paper it cites, or in its "not defined" list.
+   sourced from this paper or a paper it cites, or in its "not defined" list, or in both.
    One row may cover several symbols if it names each and gives each one's
-   meaning; a row marked "(introduced here)" needs no quote. Flag every listed
+   meaning; a row marked "(introduced here)" (or "mine") needs no quote. Flag every listed
    symbol whose meaning is taken from convention
    rather than from the paper, such as $\sigma$ read as a standard deviation
    when the paper means the sigmoid. Operators with one fixed meaning ($\sum$,

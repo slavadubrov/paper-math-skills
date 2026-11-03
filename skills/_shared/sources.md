@@ -9,7 +9,8 @@ reading; `check-paper-math` flags a reading that breaks them.
   names as the official implementation. Do not use unofficial implementations.
 - Take the latest release tag on or before the date the pinned paper version was
   posted whose tree contains the code you cite; if there is none, the latest
-  commit on or before that date. A pre-release tag counts as a release tag, and
+  commit to the repository on or before that date (an earlier commit is fine
+  if every cited file is identical at both). A pre-release tag counts as a release tag, and
   so does a tag published to share checkpoints if its tree holds the code. If
   several tags point to one commit, cite the commit. If the
   code was released later, take its first release tag, or else its first commit.
