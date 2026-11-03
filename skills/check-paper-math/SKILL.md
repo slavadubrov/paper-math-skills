@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.9.6
+version: 0.9.7
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -93,8 +93,8 @@ where the user asks.
 3. **Numbers in citations.** Check every section, equation, footnote, appendix,
    algorithm, table and figure number in `paper.txt` or the PDF. The TeX source
    holds labels, not printed numbers, so it cannot confirm them. A page number
-   is _unclear_: page numbers differ between renderings, so ask for the section
-   instead.
+   used as a location, in the text or in Sources, is _unclear_: page numbers
+   differ between renderings, so ask for the section instead.
 4. **Symbols.** List what needs a row: every variable and named quantity in
    the equation, every symbol from the "Possible meanings" table in
    `<skill-dir>/../_shared/notation.md` that appears in it (such as $\sigma$,
@@ -152,7 +152,7 @@ where the user asks.
    - a claim about code, a library or another paper that breaks
      `<skill-dir>/../_shared/sources.md`, even one you can confirm yourself,
      because the reader cannot. Open each cited documentation page or source
-     file once to confirm it;
+     file once to confirm it, including files cited only to justify a version;
    - a setting stated as the paper's rule when an appendix or an experiment
      departs from it;
    - the wrong kind of statement (step 5 of `read-paper-math`: computation,
@@ -174,8 +174,8 @@ where the user asks.
      states it is not a repeat);
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
-    _contradicted_. A fact counts as present when the reading establishes every
-    claim in it; the worked example and its numbers may differ. A fact with any claim
+    _contradicted_. A fact counts as present when the reading states every claim in
+    it, in one place or by explicitly combining two passages; the worked example and its numbers may differ. A fact with any claim
     absent is _missing_; say which claim is absent. A
     reading that gives the right formula but explains it wrongly
     _contradicts_ the fact. For a contradiction, decide from the source which side is

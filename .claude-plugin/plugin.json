@@ -1,6 +1,6 @@
 {
   "name": "paper-math-skills",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Read and check the equations in AI and ML papers: definitions from the pinned arXiv version, shapes and roles, the kind of statement, and small-number checks that run.",
   "author": {
     "name": "Viacheslav Dubrov"
