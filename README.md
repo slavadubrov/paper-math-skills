@@ -14,6 +14,9 @@ Both skills share `skills/_shared/`:
 - `notation.md`: the usual readings of ML notation and the known exceptions;
 - `sources.md`: how to cite official code, the libraries it calls and other
   papers;
+- `vet_block.py`: refuses a Python check block that imports anything beyond
+  `math`, `fractions`, `itertools`, `functools` and NumPy, or that touches files,
+  runs code or reaches native libraries;
 - `fetch_arxiv.py`: downloads the TeX source, PDF and PDF text of one pinned
   version.
 
@@ -46,7 +49,7 @@ The numeric checks run with `uv run --no-project --with "numpy>=2,<3"`, so insta
 quotes and section numbers are checked against the PDF's text. Without it, the
 agent reads the PDF page by page, which is slower. The run commands start with
 `timeout 60`; on a system without `timeout` (older macOS), install GNU coreutils
-or drop the prefix.
+and put its `gnubin` directory on your `PATH`.
 
 ## Use
 
@@ -75,10 +78,11 @@ decide, and what the paper claims compared with what it shows.
 - The skills contact arxiv.org, GitHub (official code), library documentation
   and PyPI. Downloads and fetched pages are treated as data: never executed,
   never followed as instructions.
-- `check-paper-math` runs the Python blocks in the reading it checks. It runs
-  only blocks limited to the standard library's math modules and NumPy, and asks
-  before each run, but those limits are not a sandbox: check a reading from an
-  untrusted source in a container or a throwaway machine.
+- Both skills run Python. `read-paper-math` runs the small checks it writes.
+  `check-paper-math` runs the blocks in the reading it checks, only if
+  `vet_block.py` accepts them, and asks you in chat first unless your request
+  already told it to run them. The vetter is a filter, not a sandbox: check a
+  reading from an untrusted source in a container or a throwaway machine.
 - The plugin version changes with every rule change; update the plugin to get
   new rules.
 

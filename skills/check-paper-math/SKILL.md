@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.9.1
+version: 0.9.2
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -16,7 +16,6 @@ allowed-tools:
     - Grep
     - Glob
     - Bash(grep *)
-    - Bash(sed -n *)
     - Bash(ls *)
     - WebFetch
 ---
@@ -46,7 +45,7 @@ directory this SKILL.md was loaded from.
 ## Tools
 
 `allowed-tools` lists commands that run without asking for permission; it is
-not a limit. Read-only shell commands such as `ls`, `cat`, `grep` and `sed -n`
+not a limit. Read-only shell commands such as `ls`, `cat` and `grep`
 are fine for reading downloads. WebFetch returns a summary, so never check a
 quote against it; download the raw page or file instead, for example with
 `python3 <skill-dir>/../_shared/fetch_arxiv.py --get <url> <download-dir>/<file>`.
@@ -113,21 +112,20 @@ where the user asks.
 5. **Shapes and axes.** Re-derive the shape of every intermediate result, and the
    index, axis or distribution of every reduction. Flag mismatches and unstated
    row or column conventions.
-6. **Numbers.** Read each fenced code block before you run it; inline code in
-   prose is not a code block. Run a block only if it imports nothing but
-   `math`, `fractions`, `itertools`, `functools` and `numpy`, and uses no name
-   containing `__`, no `getattr`, `globals`, `vars`, `compile`, `exec`, `eval`,
-   `open` or `input`, nothing under `np.ctypeslib`, `np.lib`, `np.f2py`,
-   `np.testing` or `np.memmap`, and no NumPy function that loads or saves files;
-   mark any other check block _unverifiable_. These limits lower the risk of
-   running a reading's code; they are not a sandbox, so the user approves each
-   run. A block the reading
-   presents as a quote of the official code, with a file and line, is not a
-   check: verify it against that file as in step 2 instead of running it. Copy
-   each runnable block into
-   your scratch directory and run it with
-   `timeout 60 uv run --no-project --with "numpy>=2,<3" python -I <file>` from
-   an empty directory.
+6. **Numbers.** Inline code in prose is not a code block, and a `text` block is
+   printed output. A `python` block the reading presents as a quote of the
+   official code, with a file and line, is not a check: verify it against that
+   file as in step 2 instead of running it. For each other `python` block:
+   - copy it into `check.py` in a new empty scratch directory and run
+     `python3 <skill-dir>/../_shared/vet_block.py <scratch>/check.py`. If it
+     does not print `OK`, do not run the block; mark it _unverifiable_ and quote
+     the vetter's reasons;
+   - the vetter is a filter, not a sandbox. Show the user the block and run it
+     only after they agree in chat, unless the task already tells you to run
+     the reading's checks;
+   - run `timeout 60 uv run --no-project --with "numpy>=2,<3" python -I check.py`
+     from that scratch directory.
+
    Compare the output with the
    output printed in the reading. Then check what the example covers:
    - every term: every part of the equation that adds to or multiplies the
@@ -190,7 +188,7 @@ Give every defect exactly one severity.
 | Severity       | Use it for |
 | -------------- | ---------- |
 | _wrong_        | contradicts the source, the arithmetic or another part of the reading; a sentence whose most natural reading is false, such as an "it" that points at the wrong thing; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger or weaker than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
-| _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a claim about code, a library or another paper without the source `sources.md` asks for, or with a source that does not show it (_wrong_ if the source contradicts it) |
+| _unverifiable_ | a quote or cited number you cannot find in the published text; a table meaning with no quote, equation or cited paper behind it; a code block you could not or would not run; a claim about code, a library or another paper without the source `sources.md` asks for, or with a source that does not show it (_wrong_ if the source contradicts it) |
 | _missing_      | a missing arXiv version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a number the reading attributes to the paper that follows from the paper's formulas and was not recomputed; an essential reference fact the reading omits or covers only in part |
 | _unclear_      | correct, but the target reader cannot follow it; a page number used as a location; text left over from a review |
 

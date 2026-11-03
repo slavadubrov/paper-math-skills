@@ -22,6 +22,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import time
 import urllib.request
 from pathlib import Path
 
@@ -30,13 +31,34 @@ MAX_BYTES = 500 * 1024 * 1024  # refuse archives that unpack beyond this
 UA = "paper-math-skills/0.9 (one-off fetch for reading a paper)"
 
 
+DEADLINE_S = 300  # a whole download, not one socket read
+
+
+class HttpsOnly(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not newurl.startswith("https://"):
+            raise ValueError(f"refusing a redirect to {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+OPENER = urllib.request.build_opener(HttpsOnly)
+
+
 def get(url: str) -> bytes:
+    if not url.startswith("https://"):
+        raise ValueError("only https URLs")
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        body = r.read(MAX_BYTES + 1)
-    if len(body) > MAX_BYTES:
-        raise ValueError(f"{url} is larger than 500 MB; refusing")
-    return body
+    deadline = time.monotonic() + DEADLINE_S
+    chunks, size = [], 0
+    with OPENER.open(req, timeout=60) as r:
+        while chunk := r.read(1 << 20):
+            chunks.append(chunk)
+            size += len(chunk)
+            if size > MAX_BYTES:
+                raise ValueError(f"{url} is larger than 500 MB; refusing")
+            if time.monotonic() > deadline:
+                raise TimeoutError(f"{url} took longer than {DEADLINE_S} s; refusing")
+    return b"".join(chunks)
 
 
 def safe_extract(tar: tarfile.TarFile, dest: Path) -> list[str]:
@@ -96,12 +118,15 @@ def fetch(arxiv_id: str, dest: Path) -> None:
         raise
     if shutil.which("pdftotext"):
         try:
-            subprocess.run(
+            done = subprocess.run(
                 ["pdftotext", str(dest / "paper.pdf"), str(dest / "paper.txt")],
                 check=False,
                 timeout=300,
             )
+            ok = done.returncode == 0
         except subprocess.TimeoutExpired:
+            ok = False
+        if not ok:
             (dest / "paper.txt").unlink(missing_ok=True)  # never keep a partial text
 
     tex = sorted(f for f in files if f.endswith(".tex"))
@@ -152,12 +177,9 @@ if __name__ == "__main__":
     if sys.argv[1:] == ["--self-test"]:
         self_test()
     elif len(sys.argv) == 4 and sys.argv[1] == "--get":
-        if not sys.argv[2].startswith("https://"):
-            sys.exit("Only https URLs")
-        out = Path(sys.argv[3])
-        if out.exists():
-            sys.exit(f"{out} exists; use a new file name")
-        out.write_bytes(get(sys.argv[2]))  # 500 MB cap and 60 s timeout, as above
+        data = get(sys.argv[2])  # https only, 500 MB and 300 s caps
+        with open(sys.argv[3], "xb") as out:  # never overwrite, not even via a link
+            out.write(data)
     elif len(sys.argv) == 3:
         fetch(sys.argv[1], Path(sys.argv[2]))
     else:

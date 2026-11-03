@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.1
+version: 0.9.2
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -17,9 +17,7 @@ allowed-tools:
     - Write
     - Grep
     - Glob
-    - Bash(timeout 60 uv run --no-project --with "numpy>=2,<3" python -I *)
     - Bash(grep *)
-    - Bash(sed -n *)
     - Bash(ls *)
     - WebFetch
 ---
@@ -80,9 +78,9 @@ directory this SKILL.md was loaded from.
 ## Tools
 
 `allowed-tools` lists commands that run without asking for permission; it is
-not a limit. Read-only shell commands such as `ls`, `cat`, `grep` and `sed -n`
+not a limit. Read-only shell commands such as `ls`, `cat` and `grep`
 are fine for reading downloads. WebFetch returns a summary, so never quote from
-it. To quote code, download the raw file at the pinned commit into your scratch
+it. To quote code, download the raw file at the pinned commit into the download
 directory, for example
 `python3 <skill-dir>/../_shared/fetch_arxiv.py --get https://raw.githubusercontent.com/<owner>/<repo>/<commit>/<path> <download-dir>/<file>`.
 
@@ -248,18 +246,18 @@ answers only part of the question.
     min, cover both signs.
 - Prefer inputs with exact answers. For example, the scores $(0,\log3)$ give
   exponentials 1 and 3.
-- Write a short Python check with `assert` statements in your scratch
-  directory. Import only `math`, `fractions`, `itertools`, `functools` and
-  `numpy`; use no name containing `__`, no `getattr`, `globals`, `vars`,
-  `compile`, `exec`, `eval`, `open` or `input`, nothing under `np.ctypeslib`,
-  `np.lib`, `np.f2py`, `np.testing` or `np.memmap`, and no NumPy function that
-  loads or saves files. Make the output identical on every run: seed every
-  random generator and print no sets. `check-paper-math` runs nothing else. Do not add PyTorch, JAX or other
-  framework code, even if the user writes in one. A
+- Write a short Python check with `assert` statements, as `check.py` in your
+  scratch directory. Import only `math`, `fractions`, `itertools`, `functools`
+  and `numpy`. Before you run it,
+  `python3 <skill-dir>/../_shared/vet_block.py <scratch>/check.py` must print
+  `OK`; `check-paper-math` refuses to run a block the vetter rejects. Make the
+  output identical on every run: seed every random generator and print no
+  sets. Do not add PyTorch, JAX or other framework code, even if the user
+  writes in one. A
   framework equivalent in prose is fine if it cites the library's versioned
   documentation for each behaviour it relies on, such as a default reduction;
   otherwise leave it out. Run it with
-  `timeout 60 uv run --no-project --with "numpy>=2,<3" python -I <scratch>/check.py`
+  `timeout 60 uv run --no-project --with "numpy>=2,<3" python -I check.py`
   from the scratch directory. The
   `--no-project` flag keeps `uv` from installing the surrounding project. Paste
   the code and the output you actually got.
