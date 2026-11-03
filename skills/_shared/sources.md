@@ -33,7 +33,8 @@ reading; `check-paper-math` flags a reading that breaks them.
   `flatten` does to the order), an edge case (a bound, a tie, an empty or
   infinite input) and behaviour across processes. This holds even when the
   behaviour is well known, and for framework calls in a README's example code.
-  The line that calls the function is not a source for what the function does.
+  The line that calls the function is not a source for what the function does;
+  documentation that shows the behaviour by a worked example is.
 - Choose the library version the code pins (a requirements file, a lock file, a
   Dockerfile). If it gives only a minimum, such as `torch>=2.10.0`, use that
   minimum. If nothing pins it, pick a version under which the cited code runs:
