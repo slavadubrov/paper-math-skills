@@ -42,7 +42,8 @@ reading; `check-paper-math` flags a reading that breaks them.
   Dockerfile). If the cited package pins nothing but the repository's example
   or experiment setups do, use the pin of the setup behind the paper's results
   in scope, and say which. If it gives only a minimum, such as `torch>=2.10.0`,
-  use that minimum. The Python version, for a claim about the language, is
+  use that minimum, or a later version if the cited code needs one; say which
+  and why. The Python version, for a claim about the language, is
   chosen the same way. If nothing pins it, pick a version under which the cited code runs:
   the names it imports exist, and the functions it calls take and return what
   the code expects. Say how you chose the version.
