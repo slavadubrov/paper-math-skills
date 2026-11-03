@@ -1,7 +1,7 @@
 # paper-math-skills
 
 Two agent skills for the equations in AI and ML papers. They turn the method from
-the article series [Reading the Math in AI Papers](https://slavadubrov.com/blog/2026/10/22/reading-math-in-ai-papers/)
+the article series [Reading the Math in AI Papers](https://slavadubrov.com/blog/2026/11/03/reading-math-in-ai-papers/)
 into procedures written for Claude Code; other agents that load `SKILL.md`
 files can use them too.
 
