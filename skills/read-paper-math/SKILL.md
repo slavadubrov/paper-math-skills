@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.12
+version: 0.8.13
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -166,7 +166,8 @@ no axis is given, needs no source; a non-obvious default, an element order
 or behaviour across processes does.
 
 Take the library version the code pins (a requirements file, a lock file, a
-Dockerfile). If nothing pins it, pick a version under which the cited code runs:
+Dockerfile); if it gives only a minimum, such as `torch>=2.10.0`, use that
+minimum. If nothing pins it, pick a version under which the cited code runs:
 check that the names it imports exist and that the functions it calls take and
 return what the code expects. Say how you chose the version.
 
