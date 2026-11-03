@@ -31,7 +31,7 @@ MAX_BYTES = 500 * 1024 * 1024  # refuse archives that unpack beyond this
 UA = "paper-math-skills/0.9 (one-off fetch for reading a paper)"
 
 
-DEADLINE_S = 300  # a whole download, not one socket read
+DEADLINE_S = 300  # a whole download (plus at most one 60 s socket wait; DNS is not covered)
 
 
 class HttpsOnly(urllib.request.HTTPRedirectHandler):
@@ -51,7 +51,7 @@ def get(url: str) -> bytes:
     deadline = time.monotonic() + DEADLINE_S
     chunks, size = [], 0
     with OPENER.open(req, timeout=60) as r:
-        while chunk := r.read(1 << 20):
+        while chunk := r.read1(1 << 16):  # returns as soon as some data arrives
             chunks.append(chunk)
             size += len(chunk)
             if size > MAX_BYTES:

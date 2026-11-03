@@ -15,8 +15,9 @@ Both skills share `skills/_shared/`:
 - `sources.md`: how to cite official code, the libraries it calls and other
   papers;
 - `vet_block.py`: refuses a Python check block that imports anything beyond
-  `math`, `fractions`, `itertools`, `functools` and NumPy, or that touches files,
-  runs code or reaches native libraries;
+  `math`, `fractions`, `itertools`, `functools` and NumPy, or that uses a
+  builtin or attribute outside a fixed allowlist of numeric names. A block it
+  accepts is not proven safe;
 - `fetch_arxiv.py`: downloads the TeX source, PDF and PDF text of one pinned
   version.
 

@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.2
+version: 0.9.3
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -65,7 +65,8 @@ directory this SKILL.md was loaded from.
    step. Do not add hedges the paper does not make either: if it states an
    equivalence, say so. Mark your own derivations as yours.
 5. **Explain before naming.** Say what a thing does in plain words before you
-   give its technical name, and define every term before you use it.
+   give its technical name, and define every term before you use it. Give the
+   reason each step holds, and cut sentences that state nothing.
 6. **Search before you say "the paper does not".** A claim that the paper never
    mentions, defines or specifies something needs a search of the whole paper,
    including footnotes, appendices and figure captions. Say where you searched.
@@ -250,7 +251,9 @@ answers only part of the question.
   scratch directory. Import only `math`, `fractions`, `itertools`, `functools`
   and `numpy`. Before you run it,
   `python3 <skill-dir>/../_shared/vet_block.py <scratch>/check.py` must print
-  `OK`; `check-paper-math` refuses to run a block the vetter rejects. Make the
+  `OK`; `check-paper-math` refuses to run a block the vetter rejects. The vetter
+  allows a fixed list of builtins and NumPy names; if it refuses one, rewrite
+  the check with allowed names. Make the
   output identical on every run: seed every random generator and print no
   sets. Do not add PyTorch, JAX or other framework code, even if the user
   writes in one. A

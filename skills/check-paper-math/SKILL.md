@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.9.2
+version: 0.9.3
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -116,7 +116,8 @@ where the user asks.
    printed output. A `python` block the reading presents as a quote of the
    official code, with a file and line, is not a check: verify it against that
    file as in step 2 instead of running it. For each other `python` block:
-   - copy it into `check.py` in a new empty scratch directory and run
+   - copy it, without the indentation of its Markdown fence, into `check.py` in
+     a new empty scratch directory and run
      `python3 <skill-dir>/../_shared/vet_block.py <scratch>/check.py`. If it
      does not print `OK`, do not run the block; mark it _unverifiable_ and quote
      the vetter's reasons;
