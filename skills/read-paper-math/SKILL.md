@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.10
+version: 0.8.11
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -163,6 +163,11 @@ not enough. The basic meaning of a standard operation, such as `exp2`, `where`,
 `gather`, `logsumexp`, matrix multiplication, or a sum over every element when
 no axis is given, needs no source; a non-obvious default, an element order, an
 edge case or behaviour across processes does.
+
+Take the library version the code pins (a requirements file, a lock file, a
+Dockerfile). If nothing pins it, pick a version under which the cited code runs:
+check that the names it imports exist and that the functions it calls take and
+return what the code expects. Say how you chose the version.
 
 For official code, open only the repository the paper links, plus any
 repository that its README names as the official implementation. Take the latest
