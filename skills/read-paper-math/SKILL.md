@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.8
+version: 0.8.9
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -159,8 +159,10 @@ does. How a library that code calls behaves, such as whether a random draw
 includes its upper bound or what a function does on one process, needs that
 library's versioned documentation or the library's own source file at a pinned
 version, even when it is well known. Citing the line that calls the function is
-not enough. A function whose name and arguments fully state what it computes,
-such as `exp2`, `where` or `sqrt`, needs no source.
+not enough. The basic meaning of a standard operation, such as `exp2`, `where`,
+`gather`, `logsumexp`, matrix multiplication, or a sum over every element when
+no axis is given, needs no source; a non-obvious default, an element order, an
+edge case or behaviour across processes does.
 
 For official code, open only the repository the paper links, plus any
 repository that its README names as the official implementation. Take the latest
