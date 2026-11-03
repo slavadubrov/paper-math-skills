@@ -57,6 +57,9 @@ reading; `check-paper-math` flags a reading that breaks them.
 
 - Claim nothing about a paper you did not open. Name it without a link if the
   reading needs to mention it.
+  What the paper under review says about another work may be reported as that
+  paper's claim: attribute it ("the paper says Caruana's method …") and quote
+  it; do not restate it in your own voice.
 - Quote another paper from the version you cite, and check the quote against
   that version.
 
