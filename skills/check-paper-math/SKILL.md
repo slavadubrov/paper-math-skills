@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.10
+version: 0.8.11
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -146,7 +146,8 @@ where the user asks.
      a source for what the called function does. A function whose name and
      arguments fully state what it computes, such as `exp2`, `where` or `sqrt`,
      needs no source; a layout, a default, a bound or behaviour across
-     processes does;
+     processes does. Behaviour the reading states openly as its own assumption
+     is not a claim, if it says what depends on the assumption;
    - a claim that the paper never mentions or specifies something: search the
      whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of
@@ -157,7 +158,8 @@ where the user asks.
    - a term used before it is explained;
    - a step that skips the reason it holds;
    - a sentence that carries no information;
-   - a fact repeated in several sections;
+   - a fact repeated in several sections (a short pointer to the section that
+     states it is not a repeat);
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
     _contradicted_. A fact counts as present when the reading establishes every
