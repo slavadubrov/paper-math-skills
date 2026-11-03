@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.4
+version: 0.8.5
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -152,9 +152,9 @@ where the user asks.
    - a fact repeated in several sections;
    - a paragraph whose subject the reader cannot name.
 10. **Reference facts, if given.** Mark each one _present_, _missing_ or
-    _contradicted_. A fact counts as present when the reading establishes the
-    same point, even with a different example or different numbers. A fact the
-    reading covers only in part is _missing_; say which part is absent. A
+    _contradicted_. A fact counts as present when the reading establishes every
+    claim in it; the example and the numbers may differ. A fact with any claim
+    absent is _missing_; say which claim is absent. A
     reading that gives the right formula but explains it wrongly
     _contradicts_ the fact. For a contradiction, decide from the source which side is
     right, and say which.
@@ -186,7 +186,7 @@ anyway, so they can be fixed: unclear defects in the table, missing facts in the
 ## Report
 
 ```markdown
-# Check: <reading file> against <arXiv id with version>
+# Check: <reading file> against <arXiv id with version>[ and <each other paper's id>]
 
 **Verdict:** PASS | FAIL
 
