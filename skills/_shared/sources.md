@@ -8,7 +8,9 @@ reading; `check-paper-math` flags a reading that breaks them.
 - Open only the repository the paper links, plus any repository that its README
   names as the official implementation. Do not use unofficial implementations.
 - Take the latest release tag on or before the date the pinned paper version was
-  posted; if there is none, the latest commit on or before that date. If the
+  posted whose tree contains the code you cite; if there is none, the latest
+  commit on or before that date. If several tags point to one commit, cite the
+  commit. If the
   code was released later, take its first release tag, or else its first commit.
   If you have not found the matching version after opening five pages or
   listings, mark implementation choices as open.
@@ -18,7 +20,8 @@ reading; `check-paper-math` flags a reading that breaks them.
 - Quote code exactly. Mark every cut with `…`; never present edited code as a
   quote. Inline code in backticks that the reading attributes to the code (by
   file, line, or "the code does …") is a quote too. A paraphrase goes in math or
-  plain words, not in backticks.
+  plain words, not in backticks. A contiguous part of one line needs no `…`, and
+  whitespace and line breaks may be collapsed when comparing.
 
 ## Libraries the code calls
 
@@ -36,8 +39,11 @@ reading; `check-paper-math` flags a reading that breaks them.
   The line that calls the function is not a source for what the function does;
   documentation that shows the behaviour by a worked example is.
 - Choose the library version the code pins (a requirements file, a lock file, a
-  Dockerfile). If it gives only a minimum, such as `torch>=2.10.0`, use that
-  minimum. If nothing pins it, pick a version under which the cited code runs:
+  Dockerfile). If the cited package pins nothing but the repository's example
+  or experiment setups do, use the pin of the setup behind the paper's results
+  in scope, and say which. If it gives only a minimum, such as `torch>=2.10.0`,
+  use that minimum. The Python version, for a claim about the language, is
+  chosen the same way. If nothing pins it, pick a version under which the cited code runs:
   the names it imports exist, and the functions it calls take and return what
   the code expects. Say how you chose the version.
 - If you cannot source a behaviour, state it as your own assumption and say what

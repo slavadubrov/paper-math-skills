@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.3
+version: 0.9.4
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
