@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.9.7
+version: 0.9.8
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -73,7 +73,8 @@ where the user asks.
      word may carry a real hyphen, as "pre-trained" does;
    - expand ligatures such as ﬁ and ﬂ;
    - allow for math that the PDF flattened;
-   - allow a quote to change the case of its first letter.
+   - allow a quote to change the case of its first letter, and to mark a
+     grammatical edit in square brackets, as in "take[s]".
    - skip a page number, running header or figure caption that the PDF
      placed inside the quoted sentence.
 

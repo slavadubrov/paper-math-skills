@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.7
+version: 0.9.8
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -41,7 +41,8 @@ directory this SKILL.md was loaded from.
 
 1. **Quote definitions; cite locations.** Every symbol that needs a row (step 3)
    comes with the
-   sentence that defines it, quoted verbatim, or the equation that introduces
+   sentence that defines it, quoted verbatim (a grammatical edit goes in square
+   brackets), or the equation that introduces
    it, and its location (section, equation, footnote, appendix, algorithm,
    figure) in a pinned version of the paper: an arXiv ID with its version wherever one exists. Do not cite page
    numbers; they differ between renderings and are easy to get wrong.
