@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.7
+version: 0.8.8
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -173,7 +173,7 @@ Give every defect exactly one severity.
 | _wrong_        | contradicts the source, the arithmetic or another part of the reading; a word that misstates a computed number, such as "roughly unchanged" for a 2.6-fold change; output that differs from the printed output; a claim stronger or weaker than the paper's wording; an extrapolated fit presented as a prediction; a misread $\pm$ |
 | _unverifiable_ | a quote or cited number you cannot find in the published text; a code block you could not or would not run; a statement about another paper or a library's behaviour with no source |
 | _missing_      | a missing paper version; a symbol absent from both the table and the undefined list; a term or branch the numeric check does not cover; a derived number from the paper that was not recomputed; a reference fact the reading omits or covers only in part |
-| _unclear_      | correct, but the target reader cannot follow it |
+| _unclear_      | correct, but the target reader cannot follow it. A sentence whose most natural reading is false, such as an "it" that points at the wrong thing, is _wrong_ |
 
 ## Verdict
 

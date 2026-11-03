@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.6
+version: 0.8.7
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -360,6 +360,10 @@ When you are given a `check-paper-math` report on your reading:
 4. For each defect, look for other passages of the same kind, such as other
    unsourced library claims or other "the paper never says" statements, and
    fix them too. Leave the rest of the reading unchanged.
+5. Re-read each paragraph you changed together with the paragraphs around it.
+   Check that every "it", "this" and "the only" still points at the right
+   thing, that a moved sentence still follows the sentence it depends on, and
+   that no edit contradicts another passage of the reading.
 
 If you think a defect is itself wrong, keep your text and add a one-line note
 under the "Sources" heading quoting the paper passage that supports you.
