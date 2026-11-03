@@ -16,7 +16,7 @@ Both skills share `skills/_shared/`:
   version.
 
 [paper-math-readings](https://github.com/slavadubrov/paper-math-readings) holds
-the output of these skills on 15 equations, including DPO, GRPO, MLA, RoPE and
+the output of these skills on 15 equations, among them those of DPO, GRPO, MLA, RoPE and
 DDPM. It also records how each reading compared with the walkthrough of the same
 equations in the article series.
 
