@@ -9,8 +9,9 @@ reading; `check-paper-math` flags a reading that breaks them.
   names as the official implementation. Do not use unofficial implementations.
 - Take the latest release tag on or before the date the pinned paper version was
   posted whose tree contains the code you cite; if there is none, the latest
-  commit on or before that date. If several tags point to one commit, cite the
-  commit. If the
+  commit on or before that date. A pre-release tag counts as a release tag, and
+  so does a tag published to share checkpoints if its tree holds the code. If
+  several tags point to one commit, cite the commit. If the
   code was released later, take its first release tag, or else its first commit.
   If you have not found the matching version after opening five pages or
   listings, mark implementation choices as open.
@@ -41,8 +42,10 @@ reading; `check-paper-math` flags a reading that breaks them.
 - Choose the library version the code pins (a requirements file, a lock file, a
   Dockerfile). If the cited package pins nothing but the repository's example
   or experiment setups do, use the pin of the setup behind the paper's results
-  in scope, and say which. If it gives only a minimum, such as `torch>=2.10.0`,
-  use that minimum, or a later version if the cited code needs one; say which
+  in scope, and say which. If several setups pin different versions (or the
+  scope has no results), pick one, say which and why, and say where another
+  setup's version differs for a claim the reading makes. If it gives only a
+  minimum, such as `torch>=2.10.0`, use that minimum, or a later version if the cited code needs one; say which
   and why. The Python version, for a claim about the language, is
   chosen the same way. If nothing pins it, pick a version under which the cited code runs:
   the names it imports exist, and the functions it calls take and return what
