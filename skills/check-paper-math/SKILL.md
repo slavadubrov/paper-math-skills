@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.16
+version: 0.8.17
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -150,8 +150,9 @@ where the user asks.
      state what it computes, such as `exp2`, `where`, `sqrt`, `gather`,
      `logsumexp` or matrix multiplication, and a sum or mean over every element
      when no axis is given. A non-obvious default the claim depends on, an
-     element order or memory layout, an edge case (a bound, a tie, an empty or
-     infinite input) or behaviour across processes does. The library's own
+     element order or memory layout (including what a reshape such as `view`,
+     `reshape` or `flatten` does to the order), an edge case (a bound, a tie, an
+     empty or infinite input) or behaviour across processes does. The library's own
      reference implementation of the called function, at a pinned version,
      counts as its source. Behaviour the reading states openly as its own assumption
      is not a claim, if it says what depends on the assumption;

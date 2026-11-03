@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.8.11
+version: 0.8.12
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -161,8 +161,9 @@ library's versioned documentation or the library's own source file at a pinned
 version, even when it is well known. Citing the line that calls the function is
 not enough. The basic meaning of a standard operation, such as `exp2`, `where`,
 `gather`, `logsumexp`, matrix multiplication, or a sum over every element when
-no axis is given, needs no source; a non-obvious default, an element order, an
-edge case or behaviour across processes does.
+no axis is given, needs no source; a non-obvious default, an element order
+(including what a reshape such as `view` or `flatten` does to it), an edge case
+or behaviour across processes does.
 
 Take the library version the code pins (a requirements file, a lock file, a
 Dockerfile). If nothing pins it, pick a version under which the cited code runs:
