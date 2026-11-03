@@ -10,8 +10,8 @@ reading; `check-paper-math` flags a reading that breaks them.
 - Take the latest release tag on or before the date the pinned paper version was
   posted; if there is none, the latest commit on or before that date. If the
   code was released later, take its first release tag, or else its first commit.
-  If the matching version takes more than five lookups to find, mark
-  implementation choices as open.
+  If you have not found the matching version after opening five pages or
+  listings, mark implementation choices as open.
 - Cite the file, the line range and the tag or commit for each claim about what
   the code does. One citation can cover the claims in the same or the next
   sentence; any other claim needs its own.

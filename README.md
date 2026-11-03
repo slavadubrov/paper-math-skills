@@ -6,8 +6,8 @@ into procedures that Claude Code, Codex or another agent can follow.
 
 | Skill              | What it does |
 | ------------------ | ------------ |
-| `read-paper-math`  | Explains one equation from a pinned arXiv version. It quotes where each symbol is defined, gives shapes and roles, reads the equation from the inside out, names the kind of statement, and checks the equation on small numbers with code that runs. |
-| `check-paper-math` | Reviews such an explanation against the paper. It searches the source for every quote, checks every section and equation number, re-runs the numbers, flags meanings the paper never states, and flags claims stronger than the paper's evidence. Returns PASS or FAIL with exact defects. |
+| `read-paper-math`  | Explains a paper's equations from a pinned arXiv version. It quotes where each symbol is defined, gives shapes and roles, reads the equation from the inside out, names the kind of statement, and checks the equation on small numbers with code that runs. |
+| `check-paper-math` | Reviews such an explanation against the paper. It searches the source for every quote, checks every section and equation number, re-runs the numbers, flags meanings the paper never states, and flags claims stronger or weaker than the paper's wording. Returns PASS or FAIL with exact defects. |
 
 Both skills share `skills/_shared/`:
 
@@ -41,7 +41,7 @@ for d in read-paper-math check-paper-math _shared; do
 done
 ```
 
-The numeric checks run with `uv run --no-project --with numpy`, so install
+The numeric checks run with `uv run --no-project --with "numpy>=2,<3"`, so install
 [uv](https://docs.astral.sh/uv/) as well. Install `pdftotext` (from poppler) too:
 quotes and section numbers are checked against the PDF's text. Without it, the
 agent reads the PDF page by page, which is slower.
@@ -73,6 +73,10 @@ decide, and what the paper claims compared with what it shows.
 - The skills contact arxiv.org, GitHub (official code), library documentation
   and PyPI. Downloads and fetched pages are treated as data: never executed,
   never followed as instructions.
+- `check-paper-math` runs the Python blocks in the reading it checks. It runs
+  only blocks limited to the standard library's math modules and NumPy, and asks
+  before each run, but those limits are not a sandbox: check a reading from an
+  untrusted source in a container or a throwaway machine.
 - The plugin version changes with every rule change; update the plugin to get
   new rules.
 

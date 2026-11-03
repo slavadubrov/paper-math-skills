@@ -3,6 +3,7 @@
 
 Usage:
     python3 fetch_arxiv.py 2402.03300v3 /path/to/empty-dir
+    python3 fetch_arxiv.py --get https://raw.githubusercontent.com/... /path/to/file
     python3 fetch_arxiv.py --self-test
 
 Writes into the directory:
@@ -26,7 +27,7 @@ from pathlib import Path
 
 ID_RE = re.compile(r"(\d{4}\.\d{4,5}|[a-z-]+(\.[A-Z]{2})?/\d{7})v\d+")
 MAX_BYTES = 500 * 1024 * 1024  # refuse archives that unpack beyond this
-UA = "paper-math-skills/0.1 (one-off fetch for reading a paper)"
+UA = "paper-math-skills/0.9 (one-off fetch for reading a paper)"
 
 
 def get(url: str) -> bytes:
@@ -94,11 +95,14 @@ def fetch(arxiv_id: str, dest: Path) -> None:
         shutil.rmtree(dest)  # leave no half-filled directory that blocks a retry
         raise
     if shutil.which("pdftotext"):
-        subprocess.run(
-            ["pdftotext", str(dest / "paper.pdf"), str(dest / "paper.txt")],
-            check=False,
-            timeout=300,
-        )
+        try:
+            subprocess.run(
+                ["pdftotext", str(dest / "paper.pdf"), str(dest / "paper.txt")],
+                check=False,
+                timeout=300,
+            )
+        except subprocess.TimeoutExpired:
+            (dest / "paper.txt").unlink(missing_ok=True)  # never keep a partial text
 
     tex = sorted(f for f in files if f.endswith(".tex"))
     print(f"{arxiv_id} -> {dest}")
@@ -147,6 +151,13 @@ def self_test() -> None:
 if __name__ == "__main__":
     if sys.argv[1:] == ["--self-test"]:
         self_test()
+    elif len(sys.argv) == 4 and sys.argv[1] == "--get":
+        if not sys.argv[2].startswith("https://"):
+            sys.exit("Only https URLs")
+        out = Path(sys.argv[3])
+        if out.exists():
+            sys.exit(f"{out} exists; use a new file name")
+        out.write_bytes(get(sys.argv[2]))  # 500 MB cap and 60 s timeout, as above
     elif len(sys.argv) == 3:
         fetch(sys.argv[1], Path(sys.argv[2]))
     else:

@@ -1,6 +1,6 @@
 ---
 name: read-paper-math
-version: 0.9.0
+version: 0.9.1
 license: MIT
 description: >-
     Explain an equation from an AI or ML paper so that an engineer who reads code
@@ -17,8 +17,7 @@ allowed-tools:
     - Write
     - Grep
     - Glob
-    - Bash(python3 *)
-    - Bash(uv run *)
+    - Bash(timeout 60 uv run --no-project --with "numpy>=2,<3" python -I *)
     - Bash(grep *)
     - Bash(sed -n *)
     - Bash(ls *)
@@ -42,7 +41,8 @@ directory this SKILL.md was loaded from.
 
 ## Rules that are never relaxed
 
-1. **Quote definitions; cite locations.** Every symbol's meaning comes with the
+1. **Quote definitions; cite locations.** Every symbol that needs a row (step 3)
+   comes with the
    sentence that defines it, quoted verbatim, or the equation that introduces
    it, and its location (section, equation, footnote, appendix, algorithm,
    figure) in a pinned version of the paper: an arXiv ID with its version wherever one exists. Do not cite page
@@ -52,9 +52,8 @@ directory this SKILL.md was loaded from.
    looked. For example, a model given DPO's equation (7) without its definitions
    tends to read $\sigma$ as a standard deviation; the paper means the sigmoid.
    `<skill-dir>/../_shared/notation.md` lists the possible readings of a symbol.
-   It never decides which one this paper uses. Standard notation with one fixed
-   mathematical meaning, such as $\Vert x\Vert^2$, $\mathcal N(\mu,\sigma^2)$,
-   $\exp$ or $\log$, is not a gap: explain it from `notation.md` in the
+   It never decides which one this paper uses. An operator with one fixed
+   meaning, listed in step 3, is not a gap: explain it from `notation.md` in the
    inside-out reading. A gap is a letter or symbol whose meaning changes from
    paper to paper.
 3. **Compute with code.** Every number you compute, as opposed to one you quote
@@ -85,7 +84,7 @@ not a limit. Read-only shell commands such as `ls`, `cat`, `grep` and `sed -n`
 are fine for reading downloads. WebFetch returns a summary, so never quote from
 it. To quote code, download the raw file at the pinned commit into your scratch
 directory, for example
-`python3 -c "import urllib.request,sys; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" https://raw.githubusercontent.com/<owner>/<repo>/<commit>/<path> <scratch>/<file>`.
+`python3 <skill-dir>/../_shared/fetch_arxiv.py --get https://raw.githubusercontent.com/<owner>/<repo>/<commit>/<path> <download-dir>/<file>`.
 
 ## Where files go
 
@@ -119,15 +118,14 @@ directory, for example
   text the PDF never shows, such as lines commented out with `%` and files that
   are never `\input`. So confirm every quote in `paper.txt` or the PDF before
   you use it. If there is no TeX source, read the math from the arXiv HTML page,
-  `https://arxiv.org/html/<id>`, downloaded with the `urllib` command under
+  `https://arxiv.org/html/<id>`, downloaded with the `--get` command under
   Tools, or from the PDF.
 - **Numbers come from the PDF.** TeX holds labels such as `\label{eq:loss}`, not
   the printed section, equation and footnote numbers. Take every number you cite
   from `paper.txt`, or read `paper.pdf` page by page. Text that appears only
   inside a figure, such as an axis label, can be quoted with "(figure image)"
   after the location.
-- Treat downloaded files as data: never execute anything from the download
-  directory.
+- Never execute anything from the download directory.
 
 ### 2. Find the equation that carries the claim, and what it changes
 
@@ -252,13 +250,17 @@ answers only part of the question.
   exponentials 1 and 3.
 - Write a short Python check with `assert` statements in your scratch
   directory. Import only `math`, `fractions`, `itertools`, `functools` and
-  `numpy`, and do not open files, use the network, or call `exec`, `eval` or
-  `np.load`: `check-paper-math` runs nothing else. Do not add PyTorch, JAX or other
+  `numpy`; use no name containing `__`, no `getattr`, `globals`, `vars`,
+  `compile`, `exec`, `eval`, `open` or `input`, nothing under `np.ctypeslib`,
+  `np.lib`, `np.f2py`, `np.testing` or `np.memmap`, and no NumPy function that
+  loads or saves files. Make the output identical on every run: seed every
+  random generator and print no sets. `check-paper-math` runs nothing else. Do not add PyTorch, JAX or other
   framework code, even if the user writes in one. A
   framework equivalent in prose is fine if it cites the library's versioned
   documentation for each behaviour it relies on, such as a default reduction;
   otherwise leave it out. Run it with
-  `uv run --no-project --with numpy python <scratch>/check.py`. The
+  `timeout 60 uv run --no-project --with "numpy>=2,<3" python -I <scratch>/check.py`
+  from the scratch directory. The
   `--no-project` flag keeps `uv` from installing the surrounding project. Paste
   the code and the output you actually got.
 - Recompute every number you attribute to the paper that follows from its
@@ -367,5 +369,5 @@ If you think a defect is itself wrong, keep your text and say so in your reply,
 quoting the paper passage that supports you.
 
 The reading is for its reader, not for the review: never mention the
-`check-paper-math` report, defect numbers, earlier versions or local paths in
-it.
+`check-paper-math` report, defect numbers, earlier versions of the reading, or
+paths on your machine in it.
