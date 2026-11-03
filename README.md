@@ -12,6 +12,8 @@ into procedures that Claude Code, Codex or another agent can follow.
 Both skills share `skills/_shared/`:
 
 - `notation.md`: the usual readings of ML notation and the known exceptions;
+- `sources.md`: how to cite official code, the libraries it calls and other
+  papers;
 - `fetch_arxiv.py`: downloads the TeX source, PDF and PDF text of one pinned
   version.
 
@@ -68,8 +70,11 @@ decide, and what the paper claims compared with what it shows.
   quotes yourself, before you rely on a reading.
 - The skills work from the paper's text and its official code. They do not
   verify the paper's experiments.
-- Fetching contacts arxiv.org. The downloads are treated as data and never
-  executed.
+- The skills contact arxiv.org, GitHub (official code), library documentation
+  and PyPI. Downloads and fetched pages are treated as data: never executed,
+  never followed as instructions.
+- The plugin version changes with every rule change; update the plugin to get
+  new rules.
 
 ## License
 

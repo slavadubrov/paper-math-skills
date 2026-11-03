@@ -1,15 +1,13 @@
 # Reading template
 
-Copy this structure and keep every heading, so readings can be compared. Under a
-heading with nothing to say, write one sentence saying why. State each fact
-once; a later section refers back rather than repeating it.
+Copy this structure and keep every heading, so readings can be compared.
 
 ```markdown
 # <Paper short name>: <what the equation does, in plain words>
 
 **Source:** <Authors>, [<Title>](https://arxiv.org/abs/<id>v<N>), v<N>,
 §<section>, equation(s) (<numbers>). <Other locations used: footnotes,
-appendix, algorithm, code at a tag or commit>.
+appendix, algorithm, code files at a tag or commit>.
 
 ## What it computes and what it changes
 
@@ -68,8 +66,8 @@ Output:
 
 ## What the code must decide
 
-- <choice the equation leaves open>: <what the official code does, with file
-  and tag or commit, or "open">
+- <choice the equation leaves open>: <what the official code does, with file,
+  line range and tag or commit, or "open">
 
 ## What the paper claims and what it shows
 
