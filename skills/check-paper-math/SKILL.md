@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.8
+version: 0.8.9
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -143,7 +143,10 @@ where the user asks.
      (a default, a bound, a reduction) needs that library's versioned
      documentation or its own source file at a pinned version. This includes
      framework functions in a README's example code. The call site alone is not
-     a source for what the called function does;
+     a source for what the called function does. A function whose name and
+     arguments fully state what it computes, such as `exp2`, `where` or `sqrt`,
+     needs no source; a layout, a default, a bound or behaviour across
+     processes does;
    - a claim that the paper never mentions or specifies something: search the
      whole paper, footnotes and appendices included, before accepting it.
 8. **Sampling.** For every expectation or average, check the reading's account of
