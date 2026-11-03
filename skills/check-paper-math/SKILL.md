@@ -1,6 +1,6 @@
 ---
 name: check-paper-math
-version: 0.8.18
+version: 0.8.19
 license: MIT
 description: >-
     Check a written explanation of a paper's equation against the paper itself.
@@ -91,7 +91,7 @@ where the user asks.
    checked against the rendered page. A quote from another paper is checked
    against that paper, fetched at the version the reading cites.
 3. **Numbers in citations.** Check every section, equation, footnote, appendix,
-   algorithm and figure number in `paper.txt` or the PDF. The TeX source holds
+   algorithm, table and figure number in `paper.txt` or the PDF. The TeX source holds
    labels, not printed numbers, so it cannot confirm them.
 4. **Symbols.** List every variable and named quantity in the equation itself.
    Standard operators such as softmax, the transpose ($\top$ or a superscript
@@ -128,7 +128,8 @@ where the user asks.
    - the reading's own code recomputes every number that the reading attributes
      to the paper and that follows from the paper's formulas, such as a
      parameter count or a memory size. Measured results, such as a benchmark
-     score, are checked as quotes instead.
+     score, and reported numbers the paper's text gives too little to
+     reproduce are checked as quotes instead.
 7. **Claims.** For every statement about what the paper does, shows or argues,
    compare its strength with the paper's own wording. Look for:
    - "shows" or "proves" where the paper says "suspects" or "argues", and the
