@@ -44,7 +44,9 @@ done
 The numeric checks run with `uv run --no-project --with "numpy>=2,<3"`, so install
 [uv](https://docs.astral.sh/uv/) as well. Install `pdftotext` (from poppler) too:
 quotes and section numbers are checked against the PDF's text. Without it, the
-agent reads the PDF page by page, which is slower.
+agent reads the PDF page by page, which is slower. The run commands start with
+`timeout 60`; on a system without `timeout` (older macOS), install GNU coreutils
+or drop the prefix.
 
 ## Use
 
