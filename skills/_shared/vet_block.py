@@ -130,10 +130,12 @@ def self_test() -> None:
         b"from . import x",
         b"__builtins__",
         b"    import numpy",  # an indented block must be written unindented
-        b"import numpy as np\nmatch np:\n    case type(np)(x=b):\n        pass\n",
+
     ]
     for b in bad:
         assert problems(b), b
+    match = b"import numpy as np\nx = np.zeros(1)\nmatch x:\n    case np.ndarray(ctypes=c):\n        pass\n"
+    assert any("match statement" in p for p in problems(match)), problems(match)
     print("self-test passed")
 
 
